@@ -5,6 +5,7 @@ BYTEMASK = 0xff
 FUNC_READ = 0
 FUNC_WRITE = 1
 RW_LENGTH_ALL = 0xffff
+hmPollCycle = 2
 
 # Logging Variables
 logfilename = 'events.log'

@@ -134,10 +134,9 @@ def hmValidateResponse(hmStatData):
             hmFrameLength = hmStatData[2]*256 + hmStatData[1]
             if len(hmStatData) == hmFrameLength:
                 
-                # Check to see if Slave Address is in the valid range of 1 - 16
-                if 1 <= hmStatData[3] <= 16:
+                # Check to see if Slave Address is in the valid range of 1 - 32
+                if 1 <= hmStatData[3] <= hmMAXStats:
                     hmStatCheck = 1     # Looks like an OK message
-                    # ToDo check to see if the DCB length & Frame length are the same (bytes 7&8 and 10&11)
                     # ToDo sort out CRC Checksum
     return hmStatCheck 
 
@@ -171,7 +170,7 @@ def hmRecvMQTTmessage():
         for loop in hmDCBStructure:
             if hmDCBStructure[loop][5] == 'RW':
 
-                # Is the message received from the broker equal to the message function in the defined array
+                # Is the message received from the broker equal to the message functions in the defined array
                 if recvMSG.startswith(hmDCBStructure[loop][1]):
                     destination = int(recvMSG[len(hmDCBStructure[loop][1])+1:recvMSG.find('/', len(hmDCBStructure[loop][1]) + 1)])
 
@@ -192,14 +191,27 @@ def hmRecvMQTTmessage():
                             else:
                                 payload = [dcbvalue]
 
+                            # Send updates to the Thermostat
                             sendMSG = bytearray(hmFormMsgCRC(destination, FUNC_WRITE, dcbcommand, payload))
-
                             datal = sendtoSerial(sendMSG)
                     
+                            # Validate the response from the thermostat
                             if hmValidateResponse(datal) == 1:
+                                
+                                # Does the receiving data source address match the destination send address
                                 if datal[3] == destination:
+                                    
+                                    # Does the response have a WRITE response in the frame
                                     if datal[4] == FUNC_WRITE:
-                                        # ToDo - need to call the refresh of the DCB data to send to the MQTT broker
+                                        # Call the refresh of the DCB data for that thermostat
+                                        sendMSG = bytearray(hmFormMsgCRC(destination, FUNC_READ, 00, 0))
+                                        datal = sendtoSerial(sendMSG)
+
+                                        # Validate the response from the Thermostats to ensure that an appropriate message has been received for processing
+                                        if hmValidateResponse(datal) == 1:
+                                            # Check to work out what has been sent and forward to the MQTT broker
+                                            hmForwardDCBValues(datal, 0)
+
                                         logmessage('info', 'heatmiser.py', 'Command sent to Thermostat ' + str(destination) + ': ' + str(hmDCBStructure[loop][1]) + ":" + str(dcbvalue))
                                     else:
                                         logmessage('error', 'heatmiser.py', 'Failed to send command to Thermostat: ' + str(destination))
@@ -209,16 +221,15 @@ def hmRecvMQTTmessage():
 
 def hmForwardDCBValues(hmStatData, hmOverride):
     # Forward the DCB values to the MQTT Broker
-    # ToDo make more generic and include other functions not used by me
     hmMQTTDeviceID = hmStatData[3]
 
     # Check to make sure the response is from a PRT or PRT-HW device, 2 = PRT 4 = PRT-HW
     if hmStatData[13] in [2, 4]:
         for loop in hmDCBStructure:
-
+            
             # Loop through all DCB messages to be included in the outbound MQTT message
             if hmDCBStructure[loop][3] == 1:
-
+            
                 # Work with all Single Byte functions
                 if hmDCBStructure[loop][2] == 1:
                     
@@ -230,6 +241,11 @@ def hmForwardDCBValues(hmStatData, hmOverride):
                             hmSendMQTTMessage(hmMQTTDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride)
                 # Work with all > 1 Byte functions
                 else:
+
+                    # Calculate the Calibration Offset
+                    if hmDCBStructure[loop][0] == 8:
+                        hmMQTTValue = float((hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]] * 256) + hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4] + 1])
+                        hmSendMQTTMessage(hmMQTTDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], hmMQTTValue, hmOverride)
 
                     # Calculate Holiday Time
                     if hmDCBStructure[loop][0] == 24:
@@ -328,12 +344,11 @@ def main():
     # Set the initial values for process variables
     hourprocess = 0
     timeprocess = 0
-
+    
     # Connect to the Serial interface and MQTT Broker
     connectSerial()
     connectMQTT()
 
-    # ToDo carry out error checking on the socket send & receive
     while True:
         for sendIndex in hmStatList:
             begin_master = time.time()
@@ -355,9 +370,8 @@ def main():
                 # Runs at 03:00 to ensure daylight savings time is taken into account
                 if datetime.datetime.now().time().hour == 3:
                     if datetime.datetime.now().time().minute == 0 and timeprocess == 0:
-                        if timeprocess == 0:
-                            hmTimeUpdate()
-                            timeprocess = 1
+                        hmTimeUpdate()
+                        timeprocess = 1
                     elif datetime.datetime.now().time().minute == 1:
                         timeprocess = 1
 

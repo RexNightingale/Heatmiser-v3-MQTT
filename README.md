@@ -10,3 +10,13 @@ I have finally come up with a small Python bit of code to interact with the Heat
 I will confess that I am only a hobbyist and therefore the code may not be optimal but it works for what I require.
 
 I will provide more details on the total project shortly.
+
+# Connecting the Heatmiser system to the network
+
+For this I have used the GC-ATC-1000 TCP/IP to RS232/422/485 Converter.  There are others on the market however, preference is yours.
+
+# Monitoring Hardware
+
+For the actual running of the scripts I have just used a standard Raspberry PI Model B.  It does not have to be that powerful for this lot.  As it happens I have been using 1 for monitoring my boiler, so it was just easy to use.
+
+In theory when running the scripts and assuming that you have set the right IP addresses and port numbers, then this should just all fire up and off you go.  However, I did have quite a few teething problems when starting off.  Trial and error with a lot of this and a good dose of WireShark.

@@ -14,7 +14,7 @@ logfilename = 'events.log'                                          # Log file n
 hmMasterAddress = 0x81                                              # Can be either 0x81 or 0xa0
 hmMAXStats = 32                                                     # Max number of Stats available on 1 system
 hmStatList = [1, 2, 3, 4, 5, 6, 7, 10, 12, 13, 14]                  # List of the Stat ID's used
-hmThermostats = {}
+hmThermostats = {}                                                  # Dynamic array to hold current thermostat status
 
 # Setting for the MQTT element of the service
 hmMQTTpath = "<your MQTT Subscription Path>"                        # Subscription path used for your MQTT Broker   
@@ -27,12 +27,14 @@ hmSerialPort = 1023                                                 # IP Port nu
 hmSerialTimeout = 1
 
 # Heatmiser DCB Function list
+# Full details of all functions can be found in the Heatmiser v3 Protocol document
+# Settings below match those within the protocol description for RO and RW options
 # Format [ID],  0 = DCBUniqueAddress,
 #               1 = DCBFunctionName,
 #               2 = Bytes,
 #               3 = Include in Outbound MQTT Messages,
 #               4 = Offset for Read from Frame
-#               5 = Read/Write,
+#               5 = Read/Write (used to determine whether to monitor the MQTT broker for chnage),
 #               6 = MinValue expected (0 where RO),
 #               7 = MaxValue expected (0 where RO)
 hmDCBStructure = dict()

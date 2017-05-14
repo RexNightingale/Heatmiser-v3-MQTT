@@ -215,10 +215,14 @@ def hmForwardDCBValues(hmStatData, hmOverride):
     # Check to make sure the response is from a PRT or PRT-HW device, 2 = PRT 4 = PRT-HW
     if hmStatData[13] in [2, 4]:
         for loop in hmDCBStructure:
+
             # Loop through all DCB messages to be included in the outbound MQTT message
             if hmDCBStructure[loop][3] == 1:
+
                 # Work with all Single Byte functions
                 if hmDCBStructure[loop][2] == 1:
+                    
+                    # Check to see whether the stat supports the WaterState feature (PRT-HW)
                     if hmDCBStructure[loop][0] != 42:
                         hmSendMQTTMessage(hmMQTTDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride)
                     else:
@@ -227,12 +231,31 @@ def hmForwardDCBValues(hmStatData, hmOverride):
                 # Work with all > 1 Byte functions
                 else:
 
-                    # Check for Holiday Time
+                    # Calculate Holiday Time
                     if hmDCBStructure[loop][0] == 24:
                         hmMQTTValue = int((hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]] * 256) + hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4] + 1])/24
                         hmSendMQTTMessage(hmMQTTDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], hmMQTTValue, hmOverride)
 
-                    # Check for Room Temperature
+                    # Calculate Hold Time
+                    if hmDCBStructure[loop][0] == 32:
+                        hmMQTTValue = int((hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]] * 256) + hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4] + 1])
+                        hmSendMQTTMessage(hmMQTTDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], hmMQTTValue, hmOverride)
+
+                    # Calculate Remote Air Temperature
+                    # 0xffff = no sensor connected
+                    if hmDCBStructure[loop][0] == 34:
+                        hmMQTTValue = float((hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]] * 256) + hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4] + 1])/10
+                        if hmMQTTValue != 6553.5:
+                            hmSendMQTTMessage(hmMQTTDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], hmMQTTValue, hmOverride)
+                        
+                    # Calculate Floor Temperature
+                    # 0xffff = no sensor connected
+                    if hmDCBStructure[loop][0] == 36:
+                        hmMQTTValue = float((hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]] * 256) + hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4] + 1])/10
+                        if hmMQTTValue != 6553.5:
+                            hmSendMQTTMessage(hmMQTTDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], hmMQTTValue, hmOverride)
+
+                    # Calculate Built-in Air Temperature
                     if hmDCBStructure[loop][0] == 38:
                         hmMQTTValue = float((hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]] * 256) + hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4] + 1])/10
                         hmSendMQTTMessage(hmMQTTDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], hmMQTTValue, hmOverride)
@@ -276,7 +299,7 @@ def connectSerial():
             logmessage('info', 'heatmiser.py', 'Connected to the serial interface')
             break
         except socket.error, msg:
-            logmessage('error', 'heatmiser.py', 'Error connecting with the serial interface: ' + msg)
+            logmessage('error', 'heatmiser.py', 'Error connecting with the serial interface: ' + str(msg))
             time.sleep(60)
         
 
@@ -302,8 +325,11 @@ def main():
         for y in range(0, 46):
             hmThermostats[x, y] = 999
 
+    # Set the initial values for process variables
     hourprocess = 0
     timeprocess = 0
+
+    # Connect to the Serial interface and MQTT Broker
     connectSerial()
     connectMQTT()
 
@@ -311,8 +337,9 @@ def main():
     while True:
         for sendIndex in hmStatList:
             begin_master = time.time()
+
+            # Poll the thermostats for updates
             sendMSG = bytearray(hmFormMsgCRC(sendIndex, FUNC_READ, 00, 0))
-            
             datal = sendtoSerial(sendMSG)
             
             # Validate the response from the Thermostats to ensure that an appropriate message has been received for processing
@@ -338,7 +365,6 @@ def main():
                 if datetime.datetime.now().time().minute == 0:
                     if hourprocess == 0:
                         hourprocess = 1
-                        continue
                 if datetime.datetime.now().time().minute == 1:
                     hourprocess = 0
 

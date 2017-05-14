@@ -28,19 +28,19 @@ For my installation I have used the Moquitto MQTT Broker installed on a second R
 
 There are four main code blocks:
 
-# Constants.py
+### constants.py
 
 Used to store all the static global variables used by all the various utilities
 
-# MQTT.py
+### mqtt.py
 
 This utility quite simply monitors the MQTT Broker for those topics which are required, as defined within the thermostat array from 'constants.py' and places any updates received into a queue for processing within 'heatmiser.py'.  As the interface with the Thermostats was only ever desiged as a serial process interface with a single master, I needed to use a single script to control the comms with the thermostats
 
-# Logger.py
+### logger.py
 
 Just really used to log any messages generated from 'heatmiser.py' and 'MQTT.py'.
 
-# Heatmiser.py
+### heatmiser.py
 
 This is the main engine of the whole thing.  However to simplify this a bit:
 - The script polls the thermostats on a regular basis and posts any updates needed to the MQTT Broker

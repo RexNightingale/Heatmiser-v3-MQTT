@@ -373,7 +373,7 @@ def main():
                         hmTimeUpdate()
                         timeprocess = 1
                     elif datetime.datetime.now().time().minute == 1:
-                        timeprocess = 1
+                        timeprocess = 0
 
                 # Process an hourly update of the DCB values for all thermostats and all values and post to MQTT broker
                 if datetime.datetime.now().time().minute == 0:

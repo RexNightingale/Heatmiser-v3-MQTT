@@ -350,6 +350,15 @@ def main():
     connectMQTT()
 
     while True:
+        # Process an hourly update of the DCB values for all thermostats and all values and post to MQTT broker
+        if datetime.datetime.now().time().minute == 0:
+            if hourprocess == 0:
+                hourprocess = 1
+            elif hourprocess == 1:
+                hourprocess = 2
+        if datetime.datetime.now().time().minute == 1:
+            hourprocess = 0
+
         for sendIndex in hmStatList:
             begin_master = time.time()
 
@@ -374,13 +383,6 @@ def main():
                         timeprocess = 1
                     elif datetime.datetime.now().time().minute == 1:
                         timeprocess = 0
-
-                # Process an hourly update of the DCB values for all thermostats and all values and post to MQTT broker
-                if datetime.datetime.now().time().minute == 0:
-                    if hourprocess == 0:
-                        hourprocess = 1
-                if datetime.datetime.now().time().minute == 1:
-                    hourprocess = 0
 
                 # Look to see if there are any messages from the MQTT Broker to process
                 # Process 1 message at a time.

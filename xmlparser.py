@@ -5,7 +5,7 @@ xmlfilename = 'heatmiserconfig.xml'
 xmltempfilename = 'temp.xml'
 
 
-def writexml(thermostatID, level, field1, field2, field3, field4, field5, value):
+def writexml(thermostatID, field1, field2, field3, field4, field5, field6, field7, value):
     matchlevel =0
     
     # Open files for processing
@@ -20,29 +20,46 @@ def writexml(thermostatID, level, field1, field2, field3, field4, field5, value)
         # Skip the XML headers section
         if line.find("<?xml") != -1:
             continue
-        
-        if matchlevel >= 1:
-            if line.find("<" + level + ">") != -1:
-                matchlevel = 2
-            if matchlevel >=2:
-                if line.find("<" + field1 + " name=" + field2 + ">") != -1:
-                    matchlevel = 3
-                if matchlevel >= 3:
-                    if line.find("<" + field3 + " name=" + field4 + ">") != -1:
-                        matchlevel = 4
-                    if matchlevel >= 4:
-                        if line.find("<" + field5 + ">" + str(value) + "</" + field5 + ">") != -1:
-                            matchlevel = 5
-
-            filewrite.write(line)                
-                
+        # Locate the right thermostatID
         if matchlevel == 0:
-            # Locate the right thermostatID
             if line.find("<thermostatID name=" + str(thermostatID) + ">") != -1:
-                filewrite.write("<thermostatID name=" + str(thermostatID) + ">\r\n")
                 matchlevel = 1
-            else:
+            
+        # Locate the right configuration section
+        if matchlevel == 1:
+            if line.find("<" + field1 + " name=" + field2 + ">") != -1:
+                matchlevel = 2
+            if line.find("</thermostatID>") != -1:
+                matchlevel = 0
+                
+        # Locate the right day zone
+        if matchlevel == 2:
+            if line.find("<" + field3 + " name=" + field4 + ">") != -1:
+                matchlevel = 3
+            if line.find("</" + field1 + ">") != -1:
+                matchlevel = 1
+                
+        # Locate the right time zone
+        if matchlevel == 3:
+            if line.find("<" + field5 + " name=" + field6 + ">") != -1:
+                matchlevel = 4
+            if line.find("</" + field3 + ">") != -1:
+                matchlevel = 2
+        
+        # Locate the right configuration setting
+        if matchlevel >= 4:
+            if line.find("<" + field7 + ">") != -1:
+                filewrite.write("                <" + field7 + ">" + str(value) + "</" + field7 + ">\r\n")
+                matchlevel = 5
+                continue
+            elif line.find("<" + field5 + " name=" + field6 + ">") == -1: 
                 filewrite.write(line)
+            
+            if line.find("</" + field5 + ">") != -1:
+                matchlevel = 3            
+                continue
+                                
+        filewrite.write(line)
         
 #    filewrite.write("<thermostatID name=" + str(thermostatID) + ">\r\n")
 #    if level in ('config' , 'heatingtimes' , 'hotwatertimes'):
@@ -60,8 +77,10 @@ def writexml(thermostatID, level, field1, field2, field3, field4, field5, value)
     fileread.close()
     
 def main():
-    # writexml(thermostatID, level, field1, field2, field3, field4, field5, value)
-    writexml(1, "heatingtimes", "day", "weekday", "timezone", "time1", "hour", "09")
+    # writexml(thermostatID, field1, field2, field3, field4, field5, field6, field7, value)
+    writexml(1, "level", "heatingtimes", "day", "weekday", "timezone", "time1", "hour", "09")
+    writexml(1, "level", "heatingtimes", "day", "weekday", "timezone", "time1", "minute", "00")
+    writexml(1, "level", "heatingtimes", "day", "weekday", "timezone", "time1", "temp", "20")
 
 
 if __name__=="__main__": main()

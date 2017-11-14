@@ -52,12 +52,10 @@ def writexml(thermostatID, field1, field2, field3, field4, field5, field6, field
                 filewrite.write("                <" + field7 + ">" + str(value) + "</" + field7 + ">\r\n")
                 matchlevel = 5
                 continue
-            elif line.find("<" + field5 + " name=" + field6 + ">") == -1: 
-                filewrite.write(line)
-            
             if line.find("</" + field5 + ">") != -1:
-                matchlevel = 3            
-                continue
+                if matchlevel == 4:
+                    filewrite.write("                <" + field7 + ">" + str(value) + "</" + field7 + ">\r\n")
+                matchlevel = 3
                                 
         filewrite.write(line)
         

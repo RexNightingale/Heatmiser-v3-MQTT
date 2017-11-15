@@ -10,7 +10,7 @@ def writexml(thermostatID, field1, field2, field3, field4, field5, field6, field
     
     # Open files for processing
     filewrite = open(xmltempfilename, "w")
-    fileread = open(xmlfilename, "a")
+    fileread = open(xmlfilename, "r")
     
     # Write the xml headers
     filewrite.write('<?xml version="1.0" encoding="UTF-8" ?>\r\n')

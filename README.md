@@ -45,7 +45,7 @@ Just really used to log any messages generated from 'heatmiser.py' and 'MQTT.py'
 This is the main engine of the whole thing.  However to simplify this a bit:
 - The script polls the thermostats on a regular basis and posts any updates needed to the MQTT Broker
 - Only changes are sent to the MQTT Broker not all updates from each poll cycle
-- Inbetween each poll the script sees if there is anything to process from the MQTT Broker and processes 1 message every poll cycle
+- Inbetween each poll the script sees if there is anything to process from the MQTT Broker and processes 1 message every poll cycle, as the message rates aren't high
 - Every hour the script updates everything to the MQTT Broker, just in-case
 - Every day at 03:00, the script updates the time of every Thermostat
 

@@ -353,7 +353,6 @@ def hmGetTimerValues(hmStatData):
         if hmValidateResponse(datal) == 1:
             if datal[3] == sendIndex:
                 if datal[4] == FUNC_WRITE:
-                    # Need to call the refresh of the DCB data to send to the MQTT broker
                     logmessage('info', 'heatmiser.py', 'Time updated for Thermostat ID: ' + str(sendIndex))
                 else:
                     logmessage('error', 'heatmiser.py', 'Failed to update time for Thermostat ID: ' + str(sendIndex))

@@ -11,6 +11,7 @@ import datetime
 from constants import *
 from logger import logmessage
 from mqtt import outboundMQTTqueue
+from xmlparser import xmlupdate
 
 
 class crc16:

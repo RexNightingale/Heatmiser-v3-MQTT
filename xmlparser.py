@@ -32,7 +32,7 @@ def writexml(thermostatID, field1, field2, field3, field4, field5, field6, field
                 filewrite.write("    <" + field1 + " name=" + field2 + ">\r\n)
                 filewrite.write("        <" + field3 + " name=" + field4 + ">\r\n")
                 filewrite.write("            <" + field5 + " name=" + field6 + ">\r\n")
-                filewrite.write("                <" + field7 + ">" + field8 + "</" + field7 + ">\r\n")
+                filewrite.write("                <" + field7 + ">" + value + "</" + field7 + ">\r\n")
                 filewrite.write("            </" + field5 + ">\r\n")
                 filewrite.write("        </" + field3 + ">\r\n")
                 filewrite.write("    </" + field1 + ">\r\n")
@@ -45,7 +45,7 @@ def writexml(thermostatID, field1, field2, field3, field4, field5, field6, field
             if line.find("</" + field1 + ">") != -1:
                 filewrite.write("        <" + field3 + " name=" + field4 + ">\r\n")
                 filewrite.write("            <" + field5 + " name=" + field6 + ">\r\n")
-                filewrite.write("                <" + field7 + ">" + field8 + "</" + field7 + ">\r\n")
+                filewrite.write("                <" + field7 + ">" + value + "</" + field7 + ">\r\n")
                 filewrite.write("            </" + field5 + ">\r\n")
                 filewrite.write("        </" + field3 + ">\r\n")
                 matchlevel = 1
@@ -56,7 +56,7 @@ def writexml(thermostatID, field1, field2, field3, field4, field5, field6, field
                 matchlevel = 4
             if line.find("</" + field3 + ">") != -1:
                 filewrite.write("            <" + field5 + " name=" + field6 + ">\r\n")
-                filewrite.write("                <" + field7 + ">" + field8 + "</" + field7 + ">\r\n")
+                filewrite.write("                <" + field7 + ">" + value + "</" + field7 + ">\r\n")
                 filewrite.write("            </" + field5 + ">\r\n")
                 matchlevel = 2
         

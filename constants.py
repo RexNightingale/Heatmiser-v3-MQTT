@@ -9,6 +9,7 @@ hmPollCycle = 2                                                     # Polling in
 
 # Logging Variables
 logfilename = 'events.log'                                          # Log file name
+xmlfilename = 'heatmiserconfig.xml'                                 # XML configuration file name
 
 # Heatmiser Thermostat Global Variables
 hmMasterAddress = 0x81                                              # Can be either 0x81 or 0xa0

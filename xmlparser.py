@@ -6,7 +6,7 @@ from constants import xmlfilename
 xmltempfilename = 'temp.xml'
 
 def writexml(thermostatID, field1, field2, field3, field4, field5, field6, field7, value):
-    matchlevel =0
+    matchlevel = 0
     
     # Open files for processing
     filewrite = open(xmltempfilename, "w")

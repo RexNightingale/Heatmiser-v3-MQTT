@@ -278,7 +278,67 @@ def hmForwardDCBValues(hmStatData, hmOverride):
                         hmSendMQTTMessage(hmMQTTDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], hmMQTTValue, hmOverride)
 
 
-def hmTimeUpdate():
+def hmGetTimerValues(hmStatData):
+    # Get the Timer values for the thermostats
+    hmDeviceID = hmStatData[3]
+
+    # Clear all timer values for the thermostat
+    del hmThermostatTimers[hmDeviceID][:] 
+
+    # Append thermostat ID value, Thermostat Type, Program Mode
+    hmThermostatTimers[hmDeviceID].append(hmDeviceID)
+    hmThermostatTimers[hmDeviceID].append(hmStatData[13])
+    hmThermostatTimers[hmDeviceID].append(hmStatData[25])
+
+    # Temporary file output
+    #file = open("hmtimers.txt", "w")
+
+    # Get Heating timer value
+    # Check to see if program mode is 5/2 Days
+    if hmStatData[25] == 0:
+        settingsrange = 24
+        # If thermostat type is type 2 PRT
+        if hmStatData[13] == 2:
+            offset = 49
+        # If thermostat type is type 4 PRTH
+        elif hmStatData[13] == 4:
+            offset = 50
+
+    # Check to see if program mode is 7 Days
+    if hmStatData[25] == 1:
+        settingsrange = 84
+        # If thermostat type is type 2 PRT
+        if hmStatData[13] == 2:
+            offset = 73
+        # If thermostat type is type 4 PRTH
+        elif hmStatData[13] == 4:
+            offset = 106
+
+    # Append heating timer values
+    for loop in range(0, settingsrange):
+        hmThermostatTimers[hmDeviceID].append(hmStatData[loop + offset])
+
+    # Get Hotwater timer values
+    # If thermostat type is type 4 PRTH
+    if hmStatData[13] == 4:
+        # Check to see if program mode is 5/2 Days
+        if hmStatData[25] == 0:
+            offset = 74
+            settingsrange = 32
+        # Check to see if program mode is 5/2 Days
+        elif hmStatData[25] == 1:
+            offset = 190
+            settingsrange = 112
+
+        # Append heating timer values
+        for loop in range(0, settingsrange):
+            hmThermostatTimers[hmDeviceID].append(hmStatData[loop + offset])
+
+    #file.write(','.join(str(s) for s in hmThermostatTimers[hmDeviceID]))
+    #file.close()
+    
+
+    def hmTimeUpdate():
     # Update thermostat times
     dayofweek = datetime.datetime.now().isoweekday()
     hour = datetime.datetime.now().time().hour

@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 import os
+from constants import xmlfilename
 
 # Logging Variables
-xmlfilename = 'heatmiserconfig.xml'
 xmltempfilename = 'temp.xml'
 
 def writexml(thermostatID, field1, field2, field3, field4, field5, field6, field7, value):

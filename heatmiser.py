@@ -396,8 +396,8 @@ def connectMQTT():
 
 def main():
     # Sets up the inital array for the Thermostat Data
-    for x in range(0, hmMAXStats + 1):
-        for y in range(0, 46):
+    for x in range(1, hmMAXStats + 1):
+        for y in range(0, 298):
             hmThermostats[x, y] = 999
 
     # Set the initial values for process variables

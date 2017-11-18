@@ -288,10 +288,7 @@ def hmGetTimerValues(hmStatData):
     hmThermostatTimers[hmDeviceID].append(hmDeviceID)
     hmThermostatTimers[hmDeviceID].append(hmStatData[13])
     hmThermostatTimers[hmDeviceID].append(hmStatData[25])
-
-    # Temporary file output
-    #file = open("hmtimers.txt", "w")
-
+    
     # Get Heating timer value
     # Check to see if program mode is 5/2 Days
     if hmStatData[25] == 0:
@@ -316,6 +313,7 @@ def hmGetTimerValues(hmStatData):
     # Append heating timer values
     for loop in range(0, settingsrange):
         hmThermostatTimers[hmDeviceID].append(hmStatData[loop + offset])
+        hmThermostats[hmDeviceID, loop + offset] = hmStatData[loop + offset]
 
     # Get Hotwater timer values
     # If thermostat type is type 4 PRTH
@@ -332,10 +330,7 @@ def hmGetTimerValues(hmStatData):
         # Append heating timer values
         for loop in range(0, settingsrange):
             hmThermostatTimers[hmDeviceID].append(hmStatData[loop + offset])
-
-    #file.write(','.join(str(s) for s in hmThermostatTimers[hmDeviceID]))
-    #file.close()
-    
+            hmThermostats[hmDeviceID, loop + offset] = hmStatData[loop + offset]
 
     def hmTimeUpdate():
     # Update thermostat times
@@ -397,7 +392,7 @@ def connectMQTT():
 def main():
     # Sets up the inital array for the Thermostat Data
     for x in range(1, hmMAXStats + 1):
-        for y in range(0, 298):
+        for y in range(1, 299):
             hmThermostats[x, y] = 999
 
     # Set the initial values for process variables

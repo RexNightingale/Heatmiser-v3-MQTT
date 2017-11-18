@@ -154,6 +154,7 @@ def hmSendMQTTMessage(hmDeviceID, hmDCBCode, hmMQTTDCBFunction, hmMQTTValue, hmO
 def hmUpdateXML(hmDeviceID, hmDCBCode, hmTimerValue):
     # Update the Heatmiser XML Configuration file
     if hmThmerostats[hmDeviceID, hmDCBCode] != hmTimerValue:
+        hmThermostats[hmDeviceID, hmDCBCode] = hmTimerValue
         # Update the XML file
         
     
@@ -311,7 +312,8 @@ def hmGetTimerValues(hmStatData):
                 offset = 50
                 # Append hotwater timer values
                 for loop in range(0, 32):
-                    hmThermostats[hmDeviceID, loop + 74] = hmStatData[loop + 74]
+                    hmUpdateXML(hmDeviceID, loop + 74, hmStatData[loop + 74]):
+                    #hmThermostats[hmDeviceID, loop + 74] = hmStatData[loop + 74]
 
         # Get 7 day program mode values
         else:
@@ -324,11 +326,13 @@ def hmGetTimerValues(hmStatData):
                 offset = 106
                 # Append hotwater timer values
                 for loop in range(0, 112):
-                    hmThermostats[hmDeviceID, loop + 190] = hmStatData[loop + 190]
+                    hmUpdateXML(hmDeviceID, loop + 190, hmStatData[loop + 190]):
+                    #hmThermostats[hmDeviceID, loop + 190] = hmStatData[loop + 190]
 
         # Append heating timer values
         for loop in range(0, settingsrange):
-            hmThermostats[hmDeviceID, loop + offset] = hmStatData[loop + offset]
+            hmUpdateXML(hmDeviceID, loop + offset, hmStatData[loop + offset]):
+            #hmThermostats[hmDeviceID, loop + offset] = hmStatData[loop + offset]
 
                 
     def hmTimeUpdate():

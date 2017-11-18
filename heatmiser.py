@@ -142,15 +142,21 @@ def hmValidateResponse(hmStatData):
     return hmStatCheck 
 
 
-def hmSendMQTTMessage(hmMQTTDeviceID, hmMQTTDCBCode, hmMQTTDCBFunction, hmMQTTValue, hmOverride):
+def hmSendMQTTMessage(hmDeviceID, hmDCBCode, hmMQTTDCBFunction, hmMQTTValue, hmOverride):
     # Send MQTT message to the broker
     # Path is defined as hmMQTTMessagePath + DeviceID + DCB Function + Value
-    if hmThermostats[hmMQTTDeviceID, hmMQTTDCBCode] != hmMQTTValue or hmOverride == 1:
-        MQTTMessage = hmMQTTpath + '/' + str(hmMQTTDeviceID) + '/' + str(hmMQTTDCBFunction)
-        hmThermostats[hmMQTTDeviceID, hmMQTTDCBCode] = hmMQTTValue
+    if hmThermostats[hmDeviceID, hmDCBCode] != hmMQTTValue or hmOverride == 1:
+        MQTTMessage = hmMQTTpath + '/' + str(hmDeviceID) + '/' + str(hmMQTTDCBFunction)
+        hmThermostats[hmDeviceID, hmDCBCode] = hmMQTTValue
         mqttclient.publish(MQTTMessage, hmMQTTValue)
 
 
+def hmUpdateXML(hmDeviceID, hmDCBCode, hmTimerValue):
+    # Update the Heatmiser XML Configuration file
+    if hmThmerostats[hmDeviceID, hmDCBCode] != hmTimerValue:
+        # Update the XML file
+        
+    
 def on_connect(client, userdata, rc):
     logmessage('info', 'heatmiser.py', 'Connected to MQTT broker')
 
@@ -307,8 +313,8 @@ def hmGetTimerValues(hmStatData):
                 for loop in range(0, 32):
                     hmThermostats[hmDeviceID, loop + 74] = hmStatData[loop + 74]
 
-        # Check to see if program mode is 7 Days
-        if hmStatData[25] == 1:
+        # Get 7 day program mode values
+        else:
             settingsrange = 84
             # If thermostat type is type 2 PRT
             if hmStatData[13] == 2:

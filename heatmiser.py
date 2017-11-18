@@ -155,7 +155,9 @@ def hmUpdateXML(hmDeviceID, hmDCBCode, hmTimerValue):
     # Update the Heatmiser XML Configuration file
     if hmThmerostats[hmDeviceID, hmDCBCode] != hmTimerValue:
         hmThermostats[hmDeviceID, hmDCBCode] = hmTimerValue
-        # Update the XML file
+        if hmThermostats[hmDeviceID, n] = 2:
+            if 47 <= hmDCBCode >= 70 or 103 <= hmDCBCode >= 186 : 
+            # Update the XML file
         
     
 def on_connect(client, userdata, rc):

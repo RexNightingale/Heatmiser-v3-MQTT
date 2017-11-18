@@ -282,56 +282,49 @@ def hmGetTimerValues(hmStatData):
     hmDeviceID = hmStatData[3]
 
     # Clear all timer values for the thermostat
-    del hmThermostatTimers[hmDeviceID][:] 
+    #del hmThermostatTimers[hmDeviceID][:] 
 
     # Append thermostat ID value, Thermostat Type, Program Mode
-    hmThermostatTimers[hmDeviceID].append(hmDeviceID)
-    hmThermostatTimers[hmDeviceID].append(hmStatData[13])
-    hmThermostatTimers[hmDeviceID].append(hmStatData[25])
+    #hmThermostatTimers[hmDeviceID].append(hmDeviceID)
+    #hmThermostatTimers[hmDeviceID].append(hmStatData[13])
+    #hmThermostatTimers[hmDeviceID].append(hmStatData[25])
+    #hmThermostatTimers[hmDeviceID].append(hmStatData[loop + offset])
     
-    # Get Heating timer value
-    # Check to see if program mode is 5/2 Days
-    if hmStatData[25] == 0:
-        settingsrange = 24
-        # If thermostat type is type 2 PRT
-        if hmStatData[13] == 2:
-            offset = 49
-        # If thermostat type is type 4 PRTH
-        elif hmStatData[13] == 4:
-            offset = 50
-
-    # Check to see if program mode is 7 Days
-    if hmStatData[25] == 1:
-        settingsrange = 84
-        # If thermostat type is type 2 PRT
-        if hmStatData[13] == 2:
-            offset = 73
-        # If thermostat type is type 4 PRTH
-        elif hmStatData[13] == 4:
-            offset = 106
-
-    # Append heating timer values
-    for loop in range(0, settingsrange):
-        hmThermostatTimers[hmDeviceID].append(hmStatData[loop + offset])
-        hmThermostats[hmDeviceID, loop + offset] = hmStatData[loop + offset]
-
-    # Get Hotwater timer values
-    # If thermostat type is type 4 PRTH
-    if hmStatData[13] == 4:
+    # Check to make sure the response is from a PRT or PRT-HW device, 2 = PRT 4 = PRT-HW
+    if hmStatData[13] in [2, 4]:
+    
+        # Get Heating timer values
         # Check to see if program mode is 5/2 Days
         if hmStatData[25] == 0:
-            offset = 74
-            settingsrange = 32
-        # Check to see if program mode is 5/2 Days
-        elif hmStatData[25] == 1:
-            offset = 190
-            settingsrange = 112
+            settingsrange = 24
+            # If thermostat type is type 2 PRT
+            if hmStatData[13] == 2:
+                offset = 49
+            # If thermostat type is type 4 PRTH
+            elif hmStatData[13] == 4:
+                offset = 50
+                # Append hotwater timer values
+                for loop in range(0, 32):
+                    hmThermostats[hmDeviceID, loop + 74] = hmStatData[loop + 74]
+
+        # Check to see if program mode is 7 Days
+        if hmStatData[25] == 1:
+            settingsrange = 84
+            # If thermostat type is type 2 PRT
+            if hmStatData[13] == 2:
+                offset = 73
+            # If thermostat type is type 4 PRTH
+            elif hmStatData[13] == 4:
+                offset = 106
+                # Append hotwater timer values
+                for loop in range(0, 112):
+                    hmThermostats[hmDeviceID, loop + 190] = hmStatData[loop + 190]
 
         # Append heating timer values
         for loop in range(0, settingsrange):
-            hmThermostatTimers[hmDeviceID].append(hmStatData[loop + offset])
             hmThermostats[hmDeviceID, loop + offset] = hmStatData[loop + offset]
 
+                
     def hmTimeUpdate():
     # Update thermostat times
     dayofweek = datetime.datetime.now().isoweekday()

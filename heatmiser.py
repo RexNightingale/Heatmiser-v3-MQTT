@@ -156,7 +156,7 @@ def hmUpdateXML(hmDeviceID, hmDCBCode, hmTimerValue):
     if hmThmerostats[hmDeviceID, hmDCBCode] != hmTimerValue:
         hmThermostats[hmDeviceID, hmDCBCode] = hmTimerValue
         if hmThermostats[hmDeviceID, n] = 2:
-            if 47 <= hmDCBCode >= 70 or 103 <= hmDCBCode >= 186 : 
+            if 47 <= hmDCBCode <= 70 or 103 <= hmDCBCode <= 186 : 
             # Update the XML file
         
     

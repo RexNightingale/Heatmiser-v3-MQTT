@@ -221,7 +221,7 @@ def hmRecvMQTTmessage():
 
 def hmForwardDCBValues(hmStatData, hmOverride):
     # Forward the DCB values to the MQTT Broker
-    hmMQTTDeviceID = hmStatData[3]
+    hmDeviceID = hmStatData[3]
 
     # Check to make sure the response is from a PRT or PRT-HW device, 2 = PRT 4 = PRT-HW
     if hmStatData[13] in [2, 4]:
@@ -235,46 +235,46 @@ def hmForwardDCBValues(hmStatData, hmOverride):
                     
                     # Check to see whether the stat supports the WaterState feature (PRT-HW)
                     if hmDCBStructure[loop][0] != 42:
-                        hmSendMQTTMessage(hmMQTTDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride)
+                        hmSendMQTTMessage(hmDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride)
                     else:
                         if hmStatData[13] == 4:
-                            hmSendMQTTMessage(hmMQTTDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride)
+                            hmSendMQTTMessage(hmDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride)
                 # Work with all > 1 Byte functions
                 else:
 
                     # Calculate the Calibration Offset
                     if hmDCBStructure[loop][0] == 8:
-                        hmMQTTValue = float((hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]] * 256) + hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4] + 1])
-                        hmSendMQTTMessage(hmMQTTDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], hmMQTTValue, hmOverride)
+                        value = float((hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]] * 256) + hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4] + 1])
+                        hmSendMQTTMessage(hmDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], value, hmOverride)
 
                     # Calculate Holiday Time
                     if hmDCBStructure[loop][0] == 24:
-                        hmMQTTValue = int((hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]] * 256) + hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4] + 1])/24
-                        hmSendMQTTMessage(hmMQTTDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], hmMQTTValue, hmOverride)
+                        value = int((hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]] * 256) + hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4] + 1])/24
+                        hmSendMQTTMessage(hmDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], value, hmOverride)
 
                     # Calculate Hold Time
                     if hmDCBStructure[loop][0] == 32:
-                        hmMQTTValue = int((hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]] * 256) + hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4] + 1])
-                        hmSendMQTTMessage(hmMQTTDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], hmMQTTValue, hmOverride)
+                        value = int((hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]] * 256) + hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4] + 1])
+                        hmSendMQTTMessage(hmDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], value, hmOverride)
 
                     # Calculate Remote Air Temperature
                     # 0xffff = no sensor connected
                     if hmDCBStructure[loop][0] == 34:
-                        hmMQTTValue = float((hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]] * 256) + hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4] + 1])/10
-                        if hmMQTTValue != 6553.5:
-                            hmSendMQTTMessage(hmMQTTDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], hmMQTTValue, hmOverride)
+                        value = float((hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]] * 256) + hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4] + 1])/10
+                        if value != 6553.5:
+                            hmSendMQTTMessage(hmDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], value, hmOverride)
                         
                     # Calculate Floor Temperature
                     # 0xffff = no sensor connected
                     if hmDCBStructure[loop][0] == 36:
-                        hmMQTTValue = float((hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]] * 256) + hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4] + 1])/10
-                        if hmMQTTValue != 6553.5:
-                            hmSendMQTTMessage(hmMQTTDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], hmMQTTValue, hmOverride)
+                        value = float((hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]] * 256) + hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4] + 1])/10
+                        if value != 6553.5:
+                            hmSendMQTTMessage(hmDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], value, hmOverride)
 
                     # Calculate Built-in Air Temperature
                     if hmDCBStructure[loop][0] == 38:
-                        hmMQTTValue = float((hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]] * 256) + hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4] + 1])/10
-                        hmSendMQTTMessage(hmMQTTDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], hmMQTTValue, hmOverride)
+                        value = float((hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]] * 256) + hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4] + 1])/10
+                        hmSendMQTTMessage(hmDeviceID, hmDCBStructure[loop][0], hmDCBStructure[loop][1], value, hmOverride)
 
 
 def hmGetTimerValues(hmStatData):

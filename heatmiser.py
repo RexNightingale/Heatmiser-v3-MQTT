@@ -151,13 +151,17 @@ def hmSendMQTTMessage(hmDeviceID, hmDCBCode, hmMQTTDCBFunction, hmMQTTValue, hmO
         mqttclient.publish(MQTTMessage, hmMQTTValue)
 
 
-def hmUpdateXML(hmDeviceID, hmDCBCode, hmTimerValue):
+def hmUpdateXML(hmDeviceID, hmDCBCode, value):
     # Update the Heatmiser XML Configuration file
-    if hmThmerostats[hmDeviceID, hmDCBCode] != hmTimerValue:
-        hmThermostats[hmDeviceID, hmDCBCode] = hmTimerValue
-        if hmThermostats[hmDeviceID, n] = 2:
+    if hmThmerostats[hmDeviceID, hmDCBCode] != value:
+        hmThermostats[hmDeviceID, hmDCBCode] = value
+        # Model type 2 = PRT
+        if hmThermostats[hmDeviceID, 1] = 2:
             if 47 <= hmDCBCode <= 70 or 103 <= hmDCBCode <= 186 : 
-            # Update the XML file
+            # Update the XML file with heating settings
+            # xmlupdate(hmDeviceID, "level", "heatingtimes", "day", "weekday", "timezone", <time1234>, "hour", value)
+            # xmlupdate(hmDeviceID, "level", "heatingtimes", "day", "weekday", "timezone", <time1234>, "minute", value)
+            # xmlupdate(hmDeviceID, "level", "heatingtimes", "day", "weekday", "timezone", <time1234>, "temp", value)
         
     
 def on_connect(client, userdata, rc):

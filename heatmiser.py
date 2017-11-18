@@ -417,6 +417,7 @@ def main():
             if hmValidateResponse(datal) == 1:
                 # Check to work out what has been sent and forward to the MQTT broker
                 hmForwardDCBValues(datal, hourprocess)
+                hmGetTimerValues(datal)
 
             # Process the inbound message stuff
             # Actions happen inbetween the regular polling cycle

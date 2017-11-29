@@ -70,3 +70,34 @@ hmDCBStructure[27] = [43, 'DayofWeek', 1, 0 ,3, 'RW', 0, 7]         # 1-7, Mon-S
 hmDCBStructure[28] = [44, 'Hour', 1, 0 ,3, 'RW', 0, 23]             # 0 to 23
 hmDCBStructure[29] = [45, 'Minutes', 1, 0 ,3, 'RW', 0, 59]          # 0 to 59
 hmDCBStructure[30] = [46, 'Seconds', 1, 0 ,3, 'RW', 0, 59]          # 0 to 59
+
+hmDCBTimers = dict()
+hmDCBTimers[0] = [47, 'Weekday', 'Time1', 'Hour']
+hmDCBTimers[1] = [48, 'Weekday', 'Time1', 'Minute']
+hmDCBTimers[2] = [49, 'Weekday', 'Time1', 'Temp']
+hmDCBTimers[3] = [50, 'Weekday', 'Time2', 'Hour']
+hmDCBTimers[4] = [51, 'Weekday', 'Time2', 'Minute']
+hmDCBTimers[5] = [52, 'Weekday', 'Time2', 'Temp']
+hmDCBTimers[6] = [53, 'Weekday', 'Time3', 'Hour']
+hmDCBTimers[7] = [54, 'Weekday', 'Time3', 'Minute']
+hmDCBTimers[8] = [55, 'Weekday', 'Time3', 'Temp']
+hmDCBTimers[9] = [56, 'Weekday', 'Time4', 'Hour']
+hmDCBTimers[10] = [57, 'Weekday', 'Time4', 'Minute']
+hmDCBTimers[11] = [58, 'Weekday', 'Time4', 'Temp']
+hmDCBTimers[12] = [59, 'Weekend', 'Time1', 'Hour']
+hmDCBTimers[13] = [60, 'Weekend', 'Time1', 'Minute']
+hmDCBTimers[14] = [61, 'Weekend', 'Time1', 'Temp']
+hmDCBTimers[15] = [62, 'Weekend', 'Time2', 'Hour']
+hmDCBTimers[16] = [63, 'Weekend', 'Time2', 'Minute']
+hmDCBTimers[17] = [64, 'Weekend', 'Time2', 'Temp']
+hmDCBTimers[18] = [65, 'Weekend', 'Time3', 'Hour']
+hmDCBTimers[19] = [66, 'Weekend', 'Time3', 'Minute']
+hmDCBTimers[20] = [67, 'Weekend', 'Time3', 'Temp']
+hmDCBTimers[21] = [68, 'Weekend', 'Time4', 'Hour']
+hmDCBTimers[22] = [69, 'Weekend', 'Time4', 'Minute']
+hmDCBTimers[23] = [70, 'Weekend', 'Time4', 'Temp']
+
+
+
+
+

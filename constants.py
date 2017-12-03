@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import Queue
+import tweepy
+
 # Global Variables
 BYTEMASK = 0xff
 FUNC_READ = 0
@@ -16,6 +19,7 @@ hmMasterAddress = 0x81                                              # Can be eit
 hmMAXStats = 32                                                     # Max number of Stats available on 1 system
 hmStatList = [1, 2, 3, 4, 5, 6, 7, 10, 12, 13, 14]                  # List of the Stat ID's used
 hmThermostats = {}                                                  # Dynamic array to hold current thermostat status
+hmThermostatTimers = {}
 
 # Setting for the MQTT element of the service
 hmMQTTpath = "<your MQTT Subscription Path>"                        # Subscription path used for your MQTT Broker   
@@ -26,6 +30,14 @@ MQTTBrokerPort = 1883                                               # IP Port nu
 hmSerialIP = 'Serial Interface IP Address'                          # IP Address for the serial interface (IP to RS485)
 hmSerialPort = 1023                                                 # IP Port number for the serial interface
 hmSerialTimeout = 1
+
+# Settings for Twitter
+twConsumerKey = '<your key>'
+twConsumerSecret = ',your secret>'
+twAccessToken = '<your access token>'
+twAccessTokenSecret = '<your access token secret>'
+twAuth = tweepy.OAuthHandler(twConsumerKey, twConsumerSecret)
+twAuth.set_access_token(twAccessToken, twAccessTokenSecret)
 
 # Heatmiser DCB Function list
 # Full details of all functions can be found in the Heatmiser v3 Protocol document

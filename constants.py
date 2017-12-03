@@ -212,7 +212,6 @@ hmDCBTimers[136] = [183, 'Sunday', 'Time3', 'Temp', '']
 hmDCBTimers[137] = [184, 'Sunday', 'Time4', 'Hour', '']
 hmDCBTimers[138] = [185, 'Sunday', 'Time4', 'Minute', '']
 hmDCBTimers[139] = [186, 'Sunday', 'Time4', 'Temp', '']
-
 hmDCBTimers[140] = [187, 'Monday', 'Time1', 'ON', 'Hour']
 hmDCBTimers[141] = [188, 'Monday', 'Time1', 'ON', 'Minute']
 hmDCBTimers[142] = [189, 'Monday', 'Time1', 'OFF', 'Hour']

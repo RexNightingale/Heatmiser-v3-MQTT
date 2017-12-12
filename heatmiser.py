@@ -162,6 +162,7 @@ def hmUpdateXML(hmDeviceID, hmDCBCode, value):
                 for loop in range(0, 254):
                     if hmDCBTimers[loop][0] == hmDCBCode:
                         xmlupdate(hmDeviceID, "level", "heatingtimes", "day", hmDCBTimers[loop][1], "timezone", hmDCBTimers[loop][2], hmDCBTimers[loop][4], value)
+        # Model type 4 = PRT-H
         if hmThermostats[hmDeviceID, 1] == 4:
             if 71 <= hmDCBCode <= 102 or 187 <= hmDCBCode <= 298:
                 # Update the XML file with hotwater settings

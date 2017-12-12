@@ -153,7 +153,7 @@ def hmSendMQTTMessage(hmDeviceID, hmDCBCode, hmMQTTDCBFunction, hmMQTTValue, hmO
 
 def hmUpdateXML(hmDeviceID, hmDCBCode, value):
     # Update the Heatmiser XML Configuration file
-    if hmThmerostats[hmDeviceID, hmDCBCode] != value:
+    if hmThermostats[hmDeviceID, hmDCBCode] != value:
         hmThermostats[hmDeviceID, hmDCBCode] = value
         # Model type 2 = PRT
         if hmThermostats[hmDeviceID, 1] = 2:

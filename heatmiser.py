@@ -161,7 +161,7 @@ def hmUpdateXML(hmDeviceID, hmDCBCode, value):
             # Update the XML file with heating settings
             for loop in range(0, 268):
                 if hmDCBTimers[loop][0] == hmDCBCode:
-                    xmlupdate(hmDeviceID, "Timers", "heatingtimes", hmDCBTimers[loop][1], hmDCBTimers[loop][2], hmDCBTimers[loop][4], value)
+                    xmlupdate(hmDeviceID, "level", "heatingtimes", "day", hmDCBTimers[loop][1], "timezone", hmDCBTimers[loop][2], hmDCBTimers[loop][4], value)
             
             # xmlupdate(hmDeviceID, "level", "heatingtimes", "day", "weekday", "timezone", <time1234>, "hour", value)
             # xmlupdate(hmDeviceID, "level", "heatingtimes", "day", "weekday", "timezone", <time1234>, "minute", value)

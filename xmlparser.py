@@ -64,7 +64,7 @@ def writexml(thermostatID, level2, level2name, level3, level3name, level4, level
             if matchlevel == 5:
                 # write the level6 values
                 space = ''
-                space += ' ' * 6
+                space += ' ' * 5
                 filewrite.write(space + "<" + setting + ">" + value + "</" + setting + ">\r\n")
                 matchlevel = 6
 

@@ -24,6 +24,7 @@ def writexml(thermostatID, level2, level2name, level3, level3name, level4, level
             # Locate the right thermostatID
             if line.find("<thermostatID name=" + str(thermostatID) + ">") != -1:
                 matchlevel = 1
+            
             if matchlevel == 1:
                 if line.find("<" + level2 + " name=" + level2name + ">") != -1:
                     matchlevel = 2
@@ -70,6 +71,10 @@ def writexml(thermostatID, level2, level2name, level3, level3name, level4, level
             if matchlevel != 6:
                 filewrite.write(line)
 
+        if matchlevel == 0:
+            filewrite.write("<thermostatID" + str(thermostatID) + ">\r\n")
+            filewrite.write("</thermostatID>\r\n")
+        
         # Close files
         filewrite.close()
         fileread.close()

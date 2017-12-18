@@ -28,17 +28,22 @@ def writexml(thermostatID, level2, level2name, level3, level3name, level4, level
                 if line.find("<" + level2 + " name=" + level2name + ">") != -1:
                     matchlevel = 2
                 if line.find("</thermostatID>") != -1:
-                    somethingelse(setting, value, 6)
+                    somethingelse(level2, level2name, 1)
             if matchlevel == 2:
                 if line.find("<" + level3 + " name=" + level3name + ">") != -1:
                     matchlevel = 3
                 if line.find("</" + level2 + ">") != -1:
+                    somethingelse(level3, level3name, 2)
             if matchlevel == 3:
                 if line.find("<" + level4 + " name=" + level4name + ">") != -1:
                     matchlevel = 4
+                if line.find("</" + level3 + ">") != -1:
+                    somethingelse(level4, level4name, 3)
             if matchlevel == 4:
                 if line.find("<" + level5 + " name=" + level5name + ">") != -1:
-                matchlevel = 5
+                    matchlevel = 5
+                if line.find("</" + level4 + ">") != -1:
+                    somethingelse(level5, level5name, 4)
             if matchlevel == 5:
                 # write the level6 values
                 something(setting, value, 6)

@@ -8,20 +8,44 @@ xmltempfilename = 'temp.xml'
 def writexml(thermostatID, level2, level2name, level3, level3name, level4, level4name, level5, level5name, setting, value):
     matchlevel = 0
     
-    # Open files for processing
-    filewrite = open(xmltempfilename, "w")
-    fileread = open(xmlfilename, "r")
-    
-    # Write the xml headers
-    filewrite.write('<?xml version="1.0" encoding="UTF-8" ?>\r\n')
-    
-    for line in fileread:
-        # Skip the XML headers section
-        if line.find("<?xml") != -1:
-            continue
-
+    while matchlevel != 6:
+        # Open files for processing
+        filewrite = open(xmltempfilename, "w")
+        fileread = open(xmlfilename, "r")
+        
+        # Write the xml headers
+        filewrite.write('<?xml version="1.0" encoding="UTF-8" ?>\r\n')
+        
+        for line in fileread:
+            # Skip the XML headers section
+            if line.find("<?xml") != -1:
+                continue
+        
         # Locate the right thermostatID
         if line.find("<thermostatID name=" + str(thermostatID) + ">") != -1:
+            if line.find("<" + level2 + " name=" + level2name + ">") != -1:
+                if line.find("<" + level3 + " name=" + level3name + ">") != -1:
+                    if line.find("<" + level4 + " name=" + level4name + ">") != -1:
+                        if line.find("<" + level5 + " name=" + level5name + ">") != -1:
+                            # write the level6 values
+                        else:
+                            # write level5
+                    else:
+                        # write level4
+                else:
+                    # write level3
+            else:
+                # write level2
+        else:
+            # write thermostatID
+        
+        # Close files
+        filewrite.close()
+        fileread.close()
+        os.remove(xmlfilename)
+        os.rename(xmltempfilename, xmlfilename)
+
+            
             matchlevel = 1
             
         # Locate the right configuration section
@@ -71,13 +95,8 @@ def writexml(thermostatID, level2, level2name, level3, level3name, level4, level
                 matchlevel = 5
                                 
         filewrite.write(line)
-        
-    # Close files
-    filewrite.close()
-    fileread.close()
-    os.remove(xmlfilename)
-    os.rename(xmltempfilename, xmlfilename)
-    
+
+                                
 def main():
     # writexml(thermostatID, field1, field2, field3, field4, field5, field6, field7, value)
     writexml(1, "level", "heatingtimes", "day", "weekday", "timezone", "time1", "hour", "09")

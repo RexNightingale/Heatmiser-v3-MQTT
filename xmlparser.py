@@ -21,21 +21,33 @@ def writexml(thermostatID, level2, level2name, level3, level3name, level4, level
             if line.find("<?xml") != -1:
                 continue
         
-        # Locate the right thermostatID
-        if line.find("<thermostatID name=" + str(thermostatID) + ">") != -1:
-            if line.find("<" + level2 + " name=" + level2name + ">") != -1:
-                if line.find("<" + level3 + " name=" + level3name + ">") != -1:
-                    if line.find("<" + level4 + " name=" + level4name + ">") != -1:
-                        if line.find("<" + level5 + " name=" + level5name + ">") != -1:
-                            # write the level6 values
-                        else:
-                            # write level5
-                    else:
-                        # write level4
-                else:
-                    # write level3
+            # Locate the right thermostatID
+            if line.find("<thermostatID name=" + str(thermostatID) + ">") != -1:
+                matchlevel = 1
+            if matchlevel == 1 and line.find("<" + level2 + " name=" + level2name + ">") != -1:
+                matchlevel = 2
+            if matchlevel == 2 and line.find("<" + level3 + " name=" + level3name + ">") != -1:
+                matchlevel = 3
+            if matchlevel == 3 and line.find("<" + level4 + " name=" + level4name + ">") != -1:
+                matchlevel = 4
+            if matchlevel == 4 and line.find("<" + level5 + " name=" + level5name + ">") != -1:
+                matchlevel = 5
+                # write the level6 values
+                filewrite.write("<" + field7 + ">" + value + "</" + field7 + ">\r\n")
+                matchlevel = 6
+            
+            if matchlevel != 6:
+                filewrite.write(line)
+            
+            
             else:
-                # write level2
+                        # write level5
+                else:
+                    # write level4
+            else:
+                # write level3
+        else:
+            # write level2
         else:
             # write thermostatID
         
@@ -94,8 +106,6 @@ def writexml(thermostatID, level2, level2name, level3, level3name, level4, level
                 filewrite.write("                <" + field7 + ">" + value + "</" + field7 + ">\r\n")
                 matchlevel = 5
                                 
-        filewrite.write(line)
-
                                 
 def main():
     # writexml(thermostatID, field1, field2, field3, field4, field5, field6, field7, value)

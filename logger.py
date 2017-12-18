@@ -3,10 +3,11 @@
 import logging
 import glob
 import logging.handlers
-from constants import logfilename
+#from constants import logfilename
 
 my_logger = logging.getLogger('MyLogger')
 my_logger.setLevel(logging.DEBUG)
+logfilename = 'events.log'
 
 formatter = logging.Formatter('%(asctime)s [%(levelname)s] %(message)s','%Y-%m-%d %H:%M:%S')
 filehandler = logging.handlers.RotatingFileHandler(logfilename, maxBytes = 1000000, backupCount = 4)

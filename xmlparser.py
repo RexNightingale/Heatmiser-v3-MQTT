@@ -24,13 +24,17 @@ def writexml(thermostatID, level2, level2name, level3, level3name, level4, level
             # Locate the right thermostatID
             if line.find("<thermostatID name=" + str(thermostatID) + ">") != -1:
                 matchlevel = 1
-            if matchlevel == 1 and line.find("<" + level2 + " name=" + level2name + ">") != -1:
-                matchlevel = 2
-            if matchlevel == 2 and line.find("<" + level3 + " name=" + level3name + ">") != -1:
-                matchlevel = 3
-            if matchlevel == 3 and line.find("<" + level4 + " name=" + level4name + ">") != -1:
-                matchlevel = 4
-            if matchlevel == 4 and line.find("<" + level5 + " name=" + level5name + ">") != -1:
+            if matchlevel == 1:
+                if line.find("<" + level2 + " name=" + level2name + ">") != -1:
+                    matchlevel = 2
+            if matchlevel == 2:
+                if line.find("<" + level3 + " name=" + level3name + ">") != -1:
+                    matchlevel = 3
+            if matchlevel == 3:
+                if line.find("<" + level4 + " name=" + level4name + ">") != -1:
+                    matchlevel = 4
+            if matchlevel == 4:
+                if line.find("<" + level5 + " name=" + level5name + ">") != -1:
                 matchlevel = 5
             if matchlevel == 5:
                 # write the level6 values

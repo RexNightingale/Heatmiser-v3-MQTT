@@ -12,15 +12,15 @@ def writexml(thermostatID, level2, level2name, level3, level3name, level4, level
         # Open files for processing
         filewrite = open(xmltempfilename, "w")
         fileread = open(xmlfilename, "r")
-        
+
         # Write the xml headers
         filewrite.write('<?xml version="1.0" encoding="UTF-8" ?>\r\n')
-        
+
         for line in fileread:
             # Skip the XML headers section
             if line.find("<?xml") != -1:
                 continue
-        
+
             # Locate the right thermostatID
             if line.find("<thermostatID name=" + str(thermostatID) + ">") != -1:
                 matchlevel = 1
@@ -32,33 +32,20 @@ def writexml(thermostatID, level2, level2name, level3, level3name, level4, level
                 matchlevel = 4
             if matchlevel == 4 and line.find("<" + level5 + " name=" + level5name + ">") != -1:
                 matchlevel = 5
+            if matchlevel == 5:
                 # write the level6 values
-                filewrite.write("<" + field7 + ">" + value + "</" + field7 + ">\r\n")
+                something(field7, value, 6)
                 matchlevel = 6
-            
+
             if matchlevel != 6:
                 filewrite.write(line)
-            
-            
-            else:
-                        # write level5
-                else:
-                    # write level4
-            else:
-                # write level3
-        else:
-            # write level2
-        else:
-            # write thermostatID
-        
+
         # Close files
         filewrite.close()
         fileread.close()
         os.remove(xmlfilename)
         os.rename(xmltempfilename, xmlfilename)
 
-            
-            matchlevel = 1
             
         # Locate the right configuration section
         if matchlevel == 1:
@@ -106,6 +93,16 @@ def writexml(thermostatID, level2, level2name, level3, level3name, level4, level
                 filewrite.write("                <" + field7 + ">" + value + "</" + field7 + ">\r\n")
                 matchlevel = 5
                                 
+def something(node, value, offset):
+    space += ' ' * offset
+    filewrite.write(space + "<" + node + ">" + value + "</" + node + ">\r\n")
+
+
+def somethingelse(node, value, offset):
+    space += ' ' * offset
+    filewrite.write(space + "<" + node + " name=" + value + ">\r\n")
+    filewrite.write(space + "</" + node + ">\r\n")
+               
                                 
 def main():
     # writexml(thermostatID, field1, field2, field3, field4, field5, field6, field7, value)

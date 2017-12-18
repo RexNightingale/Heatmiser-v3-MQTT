@@ -34,7 +34,7 @@ def writexml(thermostatID, level2, level2name, level3, level3name, level4, level
                 matchlevel = 5
             if matchlevel == 5:
                 # write the level6 values
-                something(field7, value, 6)
+                something(setting, value, 6)
                 matchlevel = 6
 
             if matchlevel != 6:

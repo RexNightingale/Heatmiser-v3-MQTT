@@ -62,15 +62,24 @@ def writexml(thermostatID, level2, level2name, level3, level3name, level4, level
                     filewrite.write(space + "</" + level5 + ">\r\n")
             
             if matchlevel == 5:
-                # write the level6 values
-                space = ''
-                space += ' ' * 5
-                filewrite.write(space + "<" + setting + ">" + value + "</" + setting + ">\r\n")
-                matchlevel = 6
+                if line.find("<" + setting + ">" + value + "</" + setting + ">") != -1:
+                    matchlevel = 6
+                    filewrite.write(line)
+                    continue 
+                if line.find("<" + setting + ">") != -1:
+                    space = ''
+                    space += ' ' * 5
+                    filewrite.write(space + "<" + setting + ">" + value + "</" + setting + ">\r\n")
+                    matchlevel = 6
+                    continue
+                if line.find("</" + level5 + ">") != -1:
+                    space = ''
+                    space += ' ' * 5
+                    filewrite.write(space + "<" + setting + ">" + value + "</" + setting + ">\r\n")
+                    matchlevel = 6
 
-            if matchlevel != 6:
-                filewrite.write(line)
-
+            filewrite.write(line)
+            
         if matchlevel == 0:
             filewrite.write("<thermostatID" + str(thermostatID) + ">\r\n")
             filewrite.write("</thermostatID>\r\n")
@@ -81,53 +90,7 @@ def writexml(thermostatID, level2, level2name, level3, level3name, level4, level
         os.remove(xmlfilename)
         os.rename(xmltempfilename, xmlfilename)
 
-            
-        # Locate the right configuration section
-        if matchlevel == 1:
-            if line.find("<" + field1 + " name=" + field2 + ">") != -1:
-                matchlevel = 2
-            if line.find("</thermostatID>") != -1:
-                filewrite.write("    <" + field1 + " name=" + field2 + ">\r\n)
-                filewrite.write("        <" + field3 + " name=" + field4 + ">\r\n")
-                filewrite.write("            <" + field5 + " name=" + field6 + ">\r\n")
-                filewrite.write("                <" + field7 + ">" + value + "</" + field7 + ">\r\n")
-                filewrite.write("            </" + field5 + ">\r\n")
-                filewrite.write("        </" + field3 + ">\r\n")
-                filewrite.write("    </" + field1 + ">\r\n")
-                matchlevel = 0
-                
-        # Locate the right day zone
-        if matchlevel == 2:
-            if line.find("<" + field3 + " name=" + field4 + ">") != -1:
-                matchlevel = 3
-            if line.find("</" + field1 + ">") != -1:
-                filewrite.write("        <" + field3 + " name=" + field4 + ">\r\n")
-                filewrite.write("            <" + field5 + " name=" + field6 + ">\r\n")
-                filewrite.write("                <" + field7 + ">" + value + "</" + field7 + ">\r\n")
-                filewrite.write("            </" + field5 + ">\r\n")
-                filewrite.write("        </" + field3 + ">\r\n")
-                matchlevel = 1
-                
-        # Locate the right time zone
-        if matchlevel == 3:
-            if line.find("<" + field5 + " name=" + field6 + ">") != -1:
-                matchlevel = 4
-            if line.find("</" + field3 + ">") != -1:
-                filewrite.write("            <" + field5 + " name=" + field6 + ">\r\n")
-                filewrite.write("                <" + field7 + ">" + value + "</" + field7 + ">\r\n")
-                filewrite.write("            </" + field5 + ">\r\n")
-                matchlevel = 2
-        
-        # Locate the right configuration setting
-        if matchlevel == 4:
-            if line.find("<" + field7 + ">") != -1:
-                filewrite.write("                <" + field7 + ">" + value + "</" + field7 + ">\r\n")
-                matchlevel = 5
-                continue
-            if line.find("</" + field5 + ">") != -1:
-                filewrite.write("                <" + field7 + ">" + value + "</" + field7 + ">\r\n")
-                matchlevel = 5
-                                
+
 def main():
     # writexml(thermostatID, field1, field2, field3, field4, field5, field6, field7, value)
     writexml(1, "level", "heatingtimes", "day", "weekday", "timezone", "time1", "hour", "09")

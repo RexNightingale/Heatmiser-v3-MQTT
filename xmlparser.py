@@ -5,7 +5,7 @@ from constants import xmlfilename
 # Logging Variables
 xmltempfilename = 'temp.xml'
 
-def writexml(thermostatID, field1, field2, field3, field4, field5, field6, field7, value):
+def writexml(thermostatID, level2, level2name, level3, level3name, level4, level4name, level5, level5name, setting, value):
     matchlevel = 0
     
     # Open files for processing

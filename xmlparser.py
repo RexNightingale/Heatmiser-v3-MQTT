@@ -28,22 +28,38 @@ def writexml(thermostatID, level2, level2name, level3, level3name, level4, level
                 if line.find("<" + level2 + " name=" + level2name + ">") != -1:
                     matchlevel = 2
                 if line.find("</thermostatID>") != -1:
-                    somethingelse(level2, level2name, 1)
+                    space = ''
+                    space += ' ' * 1
+                    filewrite.write(space + "<" + level2 + " name=" + level2name + ">\r\n")
+                    filewrite.write(space + "</" + level2 + ">\r\n")
+
             if matchlevel == 2:
                 if line.find("<" + level3 + " name=" + level3name + ">") != -1:
                     matchlevel = 3
                 if line.find("</" + level2 + ">") != -1:
-                    somethingelse(level3, level3name, 2)
+                    space = ''
+                    space += ' ' * 2
+                    filewrite.write(space + "<" + level3 + " name=" + level3name + ">\r\n")
+                    filewrite.write(space + "</" + level3 + ">\r\n")
+            
             if matchlevel == 3:
                 if line.find("<" + level4 + " name=" + level4name + ">") != -1:
                     matchlevel = 4
                 if line.find("</" + level3 + ">") != -1:
-                    somethingelse(level4, level4name, 3)
+                    space = ''
+                    space += ' ' * 3
+                    filewrite.write(space + "<" + level4 + " name=" + level4name + ">\r\n")
+                    filewrite.write(space + "</" + level4 + ">\r\n")
+            
             if matchlevel == 4:
                 if line.find("<" + level5 + " name=" + level5name + ">") != -1:
                     matchlevel = 5
                 if line.find("</" + level4 + ">") != -1:
-                    somethingelse(level5, level5name, 4)
+                    space = ''
+                    space += ' ' * 4
+                    filewrite.write(space + "<" + level5 + " name=" + level5name + ">\r\n")
+                    filewrite.write(space + "</" + level5 + ">\r\n")
+            
             if matchlevel == 5:
                 # write the level6 values
                 something(setting, value, 6)

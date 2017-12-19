@@ -14,12 +14,12 @@ def xmlupdate(thermostatID, setting, value, level2, level2name, level3, level3na
     indentlevels = 5
     if level5 == "":
         indentlevels -= 1
-    if level4 == "":
-        indentlevels -= 1
-    if level3 == "":
-        indentlevels -= 1
-    if level2 == "":
-        indentlevels -= 1
+        if level4 == "":
+            indentlevels -= 1
+            if level3 == "":
+                indentlevels -= 1
+                if level2 == "":
+                    indentlevels -= 1
     
     while matchlevel != 6:
         # Open files for processing

@@ -13,6 +13,8 @@ from logger import logmessage
 from mqtt import outboundMQTTqueue
 from xmlparser import xmlupdate
 
+# Creation of the Twitter interface  
+api = tweepy.API(twAuth)
 
 class crc16:
     LookupHigh = [
@@ -178,11 +180,13 @@ def hmUpdateXML(hmDeviceID, hmDCBCode, value):
     
 def on_connect(client, userdata, rc):
     logmessage('info', 'heatmiser.py', 'Connected to MQTT broker')
-
+    #msgTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    #api.update_status(status = msgTime + " Connected to the MQTT broker")
 
 def on_disconnect(client, userdata, rc):
     logmessage('info', 'heatmiser.py', 'Disconnected from MQTT broker')
-
+    #msgTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    #api.update_status(status = msgTime + " Error connecting to the MQTT broker")
 
 def hmRecvMQTTmessage():
     # Check the MQTT Receive queue to see if there are any messages to process
@@ -391,6 +395,8 @@ def connectSerial():
             break
         except socket.error, msg:
             logmessage('error', 'heatmiser.py', 'Error connecting with the serial interface: ' + str(msg))
+            #msgTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            #api.update_status(status = msgTime + " Error connecting with the serial interface")
             time.sleep(60)
         
 

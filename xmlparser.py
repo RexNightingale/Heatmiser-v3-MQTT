@@ -8,7 +8,7 @@ xmlfilename = 'heatmiserconfig.xml'
 
 # Main routine to update / create the xml configuration file
 # Will support the creation of 6 levels of data within the xml file
-def writexml(thermostatID, level2, level2name, level3, level3name, level4, level4name, level5, level5name, setting, value):
+def xmlupdate(thermostatID, level2, level2name, level3, level3name, level4, level4name, level5, level5name, setting, value):
     matchlevel = 0
     
     while matchlevel != 6:

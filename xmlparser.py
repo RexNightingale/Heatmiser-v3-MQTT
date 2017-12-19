@@ -8,8 +8,18 @@ xmlfilename = 'heatmiserconfig.xml'
 
 # Main routine to update / create the xml configuration file
 # Will support the creation of 6 levels of data within the xml file
-def xmlupdate(thermostatID, level2, level2name, level3, level3name, level4, level4name, level5, level5name, setting, value):
+def xmlupdate(thermostatID, setting, value, level2, level2name, level3, level3name, level4, level4name, level5, level5name):
     matchlevel = 0
+    
+    indentlevels = 5
+    if level5 == "":
+        indentlevels -= 1
+    if level4 == "":
+        indentlevels -= 1
+    if level3 == "":
+        indentlevels -= 1
+    if level2 == "":
+        indentlevels -= 1
     
     while matchlevel != 6:
         # Open files for processing
@@ -33,7 +43,7 @@ def xmlupdate(thermostatID, level2, level2name, level3, level3name, level4, leve
                     matchlevel = 2
                 if line.find("</thermostatID>") != -1:
                     space = ''
-                    space += ' ' * 1
+                    space += ' ' * (indentlevels * 1)
                     filewrite.write(space + "<" + level2 + " name=" + level2name + ">\r\n")
                     filewrite.write(space + "</" + level2 + ">\r\n")
 
@@ -42,7 +52,7 @@ def xmlupdate(thermostatID, level2, level2name, level3, level3name, level4, leve
                     matchlevel = 3
                 if line.find("</" + level2 + ">") != -1:
                     space = ''
-                    space += ' ' * 2
+                    space += ' ' * (indentlevels * 2)
                     filewrite.write(space + "<" + level3 + " name=" + level3name + ">\r\n")
                     filewrite.write(space + "</" + level3 + ">\r\n")
             
@@ -51,7 +61,7 @@ def xmlupdate(thermostatID, level2, level2name, level3, level3name, level4, leve
                     matchlevel = 4
                 if line.find("</" + level3 + ">") != -1:
                     space = ''
-                    space += ' ' * 3
+                    space += ' ' * (indentlevels * 3)
                     filewrite.write(space + "<" + level4 + " name=" + level4name + ">\r\n")
                     filewrite.write(space + "</" + level4 + ">\r\n")
             
@@ -60,7 +70,7 @@ def xmlupdate(thermostatID, level2, level2name, level3, level3name, level4, leve
                     matchlevel = 5
                 if line.find("</" + level4 + ">") != -1:
                     space = ''
-                    space += ' ' * 4
+                    space += ' ' * (indentlevels * 4)
                     filewrite.write(space + "<" + level5 + " name=" + level5name + ">\r\n")
                     filewrite.write(space + "</" + level5 + ">\r\n")
             
@@ -71,13 +81,13 @@ def xmlupdate(thermostatID, level2, level2name, level3, level3name, level4, leve
                     continue 
                 if line.find("<" + setting + ">") != -1:
                     space = ''
-                    space += ' ' * 5
+                    space += ' ' * (indentlevels * 5)
                     filewrite.write(space + "<" + setting + ">" + value + "</" + setting + ">\r\n")
                     matchlevel = 6
                     continue
                 if line.find("</" + level5 + ">") != -1:
                     space = ''
-                    space += ' ' * 5
+                    space += ' ' * (indentlevels * 5)
                     filewrite.write(space + "<" + setting + ">" + value + "</" + setting + ">\r\n")
                     matchlevel = 6
 
@@ -92,13 +102,3 @@ def xmlupdate(thermostatID, level2, level2name, level3, level3name, level4, leve
         fileread.close()
         os.remove(xmlfilename)
         os.rename(xmltempfilename, xmlfilename)
-
-
-def main():
-    # writexml(thermostatID, field1, field2, field3, field4, field5, field6, field7, value)
-    writexml(1, "level", "heatingtimes", "day", "weekday", "timezone", "time1", "hour", "09")
-    writexml(1, "level", "heatingtimes", "day", "weekday", "timezone", "time1", "minute", "00")
-    writexml(1, "level", "heatingtimes", "day", "weekday", "timezone", "time1", "temp", "20")
-
-
-if __name__=="__main__": main()

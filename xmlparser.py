@@ -90,7 +90,7 @@ def xmlupdate(thermostatID, setting, value, level2, level2name, level3, level3na
                 else:
                     return
                 
-            if setting = "" or value = "":
+            if setting == "" or value == "":
                 if matchlevel == 5:
                     if line.find("<" + setting + ">" + value + "</" + setting + ">") != -1:
                         matchlevel = 6

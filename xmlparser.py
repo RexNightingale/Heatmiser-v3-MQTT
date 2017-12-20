@@ -55,7 +55,7 @@ def xmlupdate(thermostatID, setting, value, level2, level2name, level3, level3na
                 if level3 != "":
                     if matchlevel == 2:
                         if line.find("<" + level3 + " name=" + level3name + ">") != -1:
-                        matchlevel = 3
+                            matchlevel = 3
                         if line.find("</" + level2 + ">") != -1:
                             space = ''
                             space += ' ' * ((indentlevels - 3) * 4)

@@ -61,7 +61,10 @@ def xmlupdate(thermostatID, setting, value, level2, level2name, level3, level3na
                     if line.find("<" + level4 + " name=" + level4name + ">") != -1:
                         matchlevel = 4
                         indentlevel = 4
-                    if line.find("</" + level3 + ">") != -1:
+                    something = level3
+                    if not level3:
+                        something = level2
+                    if line.find("</" + something + ">") != -1:
                         space = ''
                         space += ' ' * (indentlevel * 4)
                         filewrite.write(space + "<" + level4 + " name=" + level4name + ">\r\n")
@@ -74,7 +77,12 @@ def xmlupdate(thermostatID, setting, value, level2, level2name, level3, level3na
                     if line.find("<" + level5 + " name=" + level5name + ">") != -1:
                         matchlevel = 5
                         indentlevel = 5
-                    if line.find("</" + level4 + ">") != -1:
+                    something = level4
+                    if not level4:
+                        something = level3
+                        if not level3:
+                            something = level2
+                    if line.find("</" + something + ">") != -1:
                         space = ''
                         space += ' ' * (indentlevel * 4)
                         filewrite.write(space + "<" + level5 + " name=" + level5name + ">\r\n")

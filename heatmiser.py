@@ -172,6 +172,8 @@ def UpdateXML(hmDeviceID, hmDCBCode, value):
     # Update the Heatmiser XML Configuration file
     if hmDCBCode <= 42:
         xmlupdate(hmDeviceID, str(hmDCBFunction), str(value), "level", "configuration", "", "", "", "", "", "")
+    if 49 <= hmDCBCode <= 72 or 105 <= hmDCBCode <= 188:
+        logmessage('info', 'heatmiser.py', 'Update Timer Settings : ' + str(hmDeviceID))
     return
 
     # Update the XML Configuration file
@@ -338,7 +340,7 @@ def hmGetTimerValues(hmStatData):
                 offset = 50
                 # Append hotwater timer values
                 for loop in range(0, 32):
-                    hmUpdateXML(hmDeviceID, loop + 74, hmStatData[loop + 74]):
+                    UpdateXML(hmDeviceID, loop + 74, hmStatData[loop + 74]):
                     #hmThermostats[hmDeviceID, loop + 74] = hmStatData[loop + 74]
 
         # Get 7 day program mode values
@@ -352,14 +354,14 @@ def hmGetTimerValues(hmStatData):
                 offset = 106
                 # Append hotwater timer values
                 for loop in range(0, 112):
-                    hmUpdateXML(hmDeviceID, loop + 190, hmStatData[loop + 190]):
+                    UpdateXML(hmDeviceID, loop + 190, hmStatData[loop + 190]):
                     #hmThermostats[hmDeviceID, loop + 190] = hmStatData[loop + 190]
 
         # Append heating timer values
         for loop in range(0, settingsrange):
             if hmThermostats[hmDeviceID, loop + offset] != hmStatData[loop + offset]:
                 hmThermostats[hmDeviceID, loop + offset] = hmStatData[loop + offset]
-                hmUpdateXML(hmDeviceID, loop + offset, hmStatData[loop + offset]):
+                UpdateXML(hmDeviceID, loop + offset, "hello", hmStatData[loop + offset]):
 
                 
 def hmTimeUpdate():

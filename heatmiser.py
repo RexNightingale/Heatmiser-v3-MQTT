@@ -150,6 +150,7 @@ def hmSendMQTTMessage(hmDeviceID, hmDCBCode, hmDCBFunction, hmMQTTValue, hmOverr
     if hmThermostats[hmDeviceID, hmDCBCode] != hmMQTTValue or hmOverride == 1:
         MQTTMessage = hmMQTTpath + '/' + str(hmDeviceID) + '/' + str(hmDCBFunction)
         hmThermostats[hmDeviceID, hmDCBCode] = hmMQTTValue
+        logmessage('info', 'heatmiser.py', 'Message sent to MQTT Broker ' + str(MQTTMessage) + ":" + str(hmMQTTValue))
         mqttclient.publish(MQTTMessage, hmMQTTValue)
 
 

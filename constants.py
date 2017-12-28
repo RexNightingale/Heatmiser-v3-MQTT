@@ -76,7 +76,7 @@ hmDCBStructure[22] = [36, 'FloorTemp', 2, 1, 3, 'RO', 0, 0]         # Floor Sens
 hmDCBStructure[23] = [38, 'StatTemp', 2, 1, 3, 'RO', 0, 0]          # Built-in Air Sensor Temp
 hmDCBStructure[24] = [40, 'ErrorCode', 1, 1, 3, 'RO', 0, 0]         # 0 = air sensor error, 1 = floor sensor error, 2 = remote air sensor error
 hmDCBStructure[25] = [41, 'HeatingState', 1, 1, 3, 'RO', 0, 0]      # 0 = Off, 1 = On
-hmDCBStructure[26] = [42, 'WaterState', 1, 1 ,3, 'RW', 0, 1]	      # 0 = Off, 1 = On
+hmDCBStructure[26] = [42, 'WaterState', 1, 1 ,3, 'RW', 0, 1]        # 0 = Off, 1 = On
 hmDCBStructure[27] = [43, 'DayofWeek', 1, 0 ,3, 'RW', 0, 7]         # 1-7, Mon-Sun
 hmDCBStructure[28] = [44, 'Hour', 1, 0 ,3, 'RW', 0, 23]             # 0 to 23
 hmDCBStructure[29] = [45, 'Minutes', 1, 0 ,3, 'RW', 0, 59]          # 0 to 59

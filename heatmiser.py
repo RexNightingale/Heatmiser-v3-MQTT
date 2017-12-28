@@ -318,15 +318,6 @@ def hmGetTimerValues(hmStatData):
     # Get the Timer values for the thermostats
     hmDeviceID = hmStatData[3]
 
-    # Clear all timer values for the thermostat
-    #del hmThermostatTimers[hmDeviceID][:] 
-
-    # Append thermostat ID value, Thermostat Type, Program Mode
-    #hmThermostatTimers[hmDeviceID].append(hmDeviceID)
-    #hmThermostatTimers[hmDeviceID].append(hmStatData[13])
-    #hmThermostatTimers[hmDeviceID].append(hmStatData[25])
-    #hmThermostatTimers[hmDeviceID].append(hmStatData[loop + offset])
-    
     # Check to make sure the response is from a PRT or PRT-HW device, 2 = PRT 4 = PRT-HW
     if hmStatData[13] in [2, 4]:
     

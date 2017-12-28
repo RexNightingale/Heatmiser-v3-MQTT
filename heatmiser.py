@@ -172,12 +172,7 @@ def hmUpdateXML(hmDeviceID, hmDCBCode, value):
                 for loop in range(0, 254):
                     if hmDCBTimers[loop][0] == hmDCBCode:
                         xmlupdate(hmDeviceID, hmDCBTimers[loop][4], value, "level", "hotwatertimes", "day", hmDCBTimers[loop][1], "timezone", hmDCBTimers[loop][2], "", "")
-                        # need to include additional level for on off
-                        
-            # xmlupdate(hmDeviceID, "level", "heatingtimes", "day", "weekday", "timezone", <time1234>, "hour", value)
-            # xmlupdate(hmDeviceID, "level", "heatingtimes", "day", "weekday", "timezone", <time1234>, "minute", value)
-            # xmlupdate(hmDeviceID, "level", "heatingtimes", "day", "weekday", "timezone", <time1234>, "temp", value)
-        
+
     
 def on_connect(client, userdata, rc):
     logmessage('info', 'heatmiser.py', 'Connected to MQTT broker')

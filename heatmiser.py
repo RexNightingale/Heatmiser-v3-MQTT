@@ -169,6 +169,10 @@ def hmUpdateConfig(hmDeviceID, DCBStructureCode, value, override, IncludeMQTT):
             SendMQTTMessage(hmDeviceID, hmDCBStructure[DCBStructureCode][0], hmDCBStructure[DCBStructureCode][1], value)
     
 def UpdateXML(hmDeviceID, hmDCBCode, value):
+    # Update the Heatmiser XML Configuration file
+    if hmDCBCode <= 42:
+        xmlupdate(hmDeviceID, str(hmDCBFunction), str(value), "level", "configuration", "", "", "", "", "", "")
+
     # Update the XML Configuration file
     # Model type 2 = PRT
     if hmThermostats[hmDeviceID, 4] == 2:

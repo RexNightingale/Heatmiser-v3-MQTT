@@ -85,7 +85,7 @@ def hmFormMsgCRC(destination, function, start, payload):
     return data
 
 
-def sendtoSerial(sendMSG):
+def SendtoSerial(sendMSG):
     # Send data to the serial interface for the thermostats
     receiveTimeout = 0.5
     datal = []
@@ -237,7 +237,7 @@ def hmRecvMQTTmessage():
 
                             # Send updates to the Thermostat
                             sendMSG = bytearray(hmFormMsgCRC(destination, FUNC_WRITE, dcbcommand, payload))
-                            datal = sendtoSerial(sendMSG)
+                            datal = SendtoSerial(sendMSG)
                     
                             # Validate the response from the thermostat
                             if hmValidateResponse(datal) == 1:
@@ -249,7 +249,7 @@ def hmRecvMQTTmessage():
                                     if datal[4] == FUNC_WRITE:
                                         # Call the refresh of the DCB data for that thermostat
                                         sendMSG = bytearray(hmFormMsgCRC(destination, FUNC_READ, 00, 0))
-                                        datal = sendtoSerial(sendMSG)
+                                        datal = SendtoSerial(sendMSG)
 
                                         # Validate the response from the Thermostats to ensure that an appropriate message has been received for processing
                                         if hmValidateResponse(datal) == 1:
@@ -371,7 +371,7 @@ def hmTimeUpdate():
     for sendIndex in hmStatList:   
         sendMSG = bytearray(hmFormMsgCRC(sendIndex, FUNC_WRITE, 43, payload))
 
-        datal = sendtoSerial(sendMSG)
+        datal = SendtoSerial(sendMSG)
 
         if hmValidateResponse(datal) == 1:
             if datal[3] == sendIndex:
@@ -448,7 +448,7 @@ def main():
 
             # Poll the thermostats for updates
             sendMSG = bytearray(hmFormMsgCRC(sendIndex, FUNC_READ, 00, 0))
-            datal = sendtoSerial(sendMSG)
+            datal = SendtoSerial(sendMSG)
             
             # Validate the response from the Thermostats to ensure that an appropriate message has been received for processing
             if hmValidateResponse(datal) == 1:

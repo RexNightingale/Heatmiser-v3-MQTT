@@ -357,7 +357,7 @@ def hmGetTimerValues(hmStatData):
             #hmThermostats[hmDeviceID, loop + offset] = hmStatData[loop + offset]
 
                 
-    def hmTimeUpdate():
+def hmTimeUpdate():
     # Update thermostat times
     dayofweek = datetime.datetime.now().isoweekday()
     hour = datetime.datetime.now().time().hour

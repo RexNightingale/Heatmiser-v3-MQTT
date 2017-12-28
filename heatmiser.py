@@ -144,16 +144,25 @@ def hmValidateResponse(hmStatData):
     return hmStatCheck 
 
 
-def hmSendMQTTMessage(hmDeviceID, hmDCBCode, hmDCBFunction, hmMQTTValue, hmOverride):
+def SendMQTTMessage(hmDeviceID, hmDCBCode, hmDCBFunction, hmMQTTValue):
     # Send MQTT message to the broker
     # Path is defined as hmMQTTMessagePath + DeviceID + DCB Function + Value
-    if hmThermostats[hmDeviceID, hmDCBCode] != hmMQTTValue or hmOverride == 1:
-        MQTTMessage = hmMQTTpath + '/' + str(hmDeviceID) + '/' + str(hmDCBFunction)
-        hmThermostats[hmDeviceID, hmDCBCode] = hmMQTTValue
-        logmessage('info', 'heatmiser.py', 'Message sent to MQTT Broker ' + str(MQTTMessage) + ":" + str(hmMQTTValue))
-        mqttclient.publish(MQTTMessage, hmMQTTValue)
+    MQTTMessage = hmMQTTpath + '/' + str(hmDeviceID) + '/' + str(hmDCBFunction)
+    logmessage('info', 'heatmiser.py', 'Message sent to MQTT Broker ' + str(MQTTMessage) + ":" + str(hmMQTTValue))
+    mqttclient.publish(MQTTMessage, hmMQTTValue)
 
 
+def hmUpdateConfig(hmDeviceID, DCBStructureCode, value, override, IncludeMQTT):
+    # Update the in-memory configuration
+    if hmThermostats[hmDeviceID, hmDCBStructure[DCBStructureCode][0]] != value or override == 1:
+        if hmThermostats[hmDeviceID, hmDCBStructure[DCBStructureCode][0]] != value:
+            hmThermostats[hmDeviceID, hmDCBStructure[DCBStructureCode][0]] = value
+        
+        # Send MQQT Values
+        if IncludeMQTT == 1:
+            SendMQTTMessage(hmDeviceID, hmDCBStructure[DCBStructureCode][0], hmDCBStructure[DCBStructureCode][1], value)
+    
+    
 def hmUpdateXML(hmDeviceID, hmDCBCode, value):
     # Update the Heatmiser XML Configuration file
     if hmThermostats[hmDeviceID, hmDCBCode] != value:
@@ -179,11 +188,13 @@ def on_connect(client, userdata, rc):
     #msgTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     #api.update_status(status = msgTime + " Connected to the MQTT broker")
 
+    
 def on_disconnect(client, userdata, rc):
     logmessage('info', 'heatmiser.py', 'Disconnected from MQTT broker')
     #msgTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     #api.update_status(status = msgTime + " Error connecting to the MQTT broker")
 
+    
 def hmRecvMQTTmessage():
     # Check the MQTT Receive queue to see if there are any messages to process
     # Receive queue is filled by mqtt.py

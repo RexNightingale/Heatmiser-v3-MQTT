@@ -158,29 +158,33 @@ def hmUpdateConfig(hmDeviceID, DCBStructureCode, value, override, IncludeMQTT):
         if hmThermostats[hmDeviceID, hmDCBStructure[DCBStructureCode][0]] != value:
             hmThermostats[hmDeviceID, hmDCBStructure[DCBStructureCode][0]] = value
         
-        # Send MQQT Values
-        if IncludeMQTT == 1:
+            # Update the XML Configuration file
+            UpdateXML(hmDeviceID, hmDCBStructure[DCBStructureCode][0], value)
+        
+            # Send MQQT Values
+            if IncludeMQTT == 1:
+                SendMQTTMessage(hmDeviceID, hmDCBStructure[DCBStructureCode][0], hmDCBStructure[DCBStructureCode][1], value)
+     
+        if override == 1 and IncludeMQTT == 1:
             SendMQTTMessage(hmDeviceID, hmDCBStructure[DCBStructureCode][0], hmDCBStructure[DCBStructureCode][1], value)
     
-    
-def hmUpdateXML(hmDeviceID, hmDCBCode, value):
-    # Update the Heatmiser XML Configuration file
-    if hmThermostats[hmDeviceID, hmDCBCode] != value:
-        hmThermostats[hmDeviceID, hmDCBCode] = value
-        # Model type 2 = PRT
-        if hmThermostats[hmDeviceID, 1] == 2:
-            if 47 <= hmDCBCode <= 70 or 103 <= hmDCBCode <= 186:
-                # Update the XML file with heating settings
-                for loop in range(0, 254):
-                    if hmDCBTimers[loop][0] == hmDCBCode:
-                        xmlupdate(hmDeviceID, hmDCBTimers[loop][4], value, "level", "heatingtimes", "day", hmDCBTimers[loop][1], "timezone", hmDCBTimers[loop][2], "", "")
-        # Model type 4 = PRT-H
-        if hmThermostats[hmDeviceID, 1] == 4:
-            if 71 <= hmDCBCode <= 102 or 187 <= hmDCBCode <= 298:
-                # Update the XML file with hotwater settings
-                for loop in range(0, 254):
-                    if hmDCBTimers[loop][0] == hmDCBCode:
-                        xmlupdate(hmDeviceID, hmDCBTimers[loop][4], value, "level", "hotwatertimes", "day", hmDCBTimers[loop][1], "timezone", hmDCBTimers[loop][2], "", "")
+def UpdateXML(hmDeviceID, hmDCBCode, value):
+    # Update the XML Configuration file
+    # Model type 2 = PRT
+    if hmThermostats[hmDeviceID, 1] == 2:
+        if 47 <= hmDCBCode <= 70 or 103 <= hmDCBCode <= 186:
+            # Update the XML file with heating settings
+            for loop in range(0, 254):
+                if hmDCBTimers[loop][0] == hmDCBCode:
+                    xmlupdate(hmDeviceID, hmDCBTimers[loop][4], value, "level", "heatingtimes", "day", hmDCBTimers[loop][1], "timezone", hmDCBTimers[loop][2], "", "")
+        
+    # Model type 4 = PRT-H
+    if hmThermostats[hmDeviceID, 1] == 4:
+        if 71 <= hmDCBCode <= 102 or 187 <= hmDCBCode <= 298:
+            # Update the XML file with hotwater settings
+            for loop in range(0, 254):
+                if hmDCBTimers[loop][0] == hmDCBCode:
+                    xmlupdate(hmDeviceID, hmDCBTimers[loop][4], value, "level", "hotwatertimes", "day", hmDCBTimers[loop][1], "timezone", hmDCBTimers[loop][2], "", "")
 
     
 def on_connect(client, userdata, rc):

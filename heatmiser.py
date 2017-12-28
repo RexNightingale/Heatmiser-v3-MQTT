@@ -144,11 +144,11 @@ def hmValidateResponse(hmStatData):
     return hmStatCheck 
 
 
-def hmSendMQTTMessage(hmDeviceID, hmDCBCode, hmMQTTDCBFunction, hmMQTTValue, hmOverride):
+def hmSendMQTTMessage(hmDeviceID, hmDCBCode, hmDCBFunction, hmMQTTValue, hmOverride):
     # Send MQTT message to the broker
     # Path is defined as hmMQTTMessagePath + DeviceID + DCB Function + Value
     if hmThermostats[hmDeviceID, hmDCBCode] != hmMQTTValue or hmOverride == 1:
-        MQTTMessage = hmMQTTpath + '/' + str(hmDeviceID) + '/' + str(hmMQTTDCBFunction)
+        MQTTMessage = hmMQTTpath + '/' + str(hmDeviceID) + '/' + str(hmDCBFunction)
         hmThermostats[hmDeviceID, hmDCBCode] = hmMQTTValue
         mqttclient.publish(MQTTMessage, hmMQTTValue)
 

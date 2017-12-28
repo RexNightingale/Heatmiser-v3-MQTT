@@ -267,10 +267,10 @@ def hmForwardDCBValues(hmStatData, hmOverride):
                     
                 # Check to see whether the stat supports the WaterState feature (PRT-HW)
                 if hmDCBStructure[loop][0] != 42:
-                    hmUpdateConfig(hmMQTTDeviceID, loop, hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride, hmDCBStructure[loop][3])
+                    hmUpdateConfig(hmDeviceID, loop, hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride, hmDCBStructure[loop][3])
                 else:
                     if hmStatData[13] == 4:
-                        hmUpdateConfig(hmMQTTDeviceID, loop, hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride, hmDCBStructure[loop][3])
+                        hmUpdateConfig(hmDeviceID, loop, hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride, hmDCBStructure[loop][3])
 
             # Work with all > 1 Byte functions
             else:
@@ -278,36 +278,36 @@ def hmForwardDCBValues(hmStatData, hmOverride):
                 # Calculate the Calibration Offset
                 if hmDCBStructure[loop][0] == 8:
                     value = float((hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]] * 256) + hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4] + 1])
-                    hmUpdateConfig(hmMQTTDeviceID, loop, value, hmOverride, hmDCBStructure[loop][3])
+                    hmUpdateConfig(hmDeviceID, loop, value, hmOverride, hmDCBStructure[loop][3])
 
                 # Calculate Holiday Time
                 if hmDCBStructure[loop][0] == 24:
                     value = int((hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]] * 256) + hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4] + 1])/24
-                    hmUpdateConfig(hmMQTTDeviceID, loop, value, hmOverride, hmDCBStructure[loop][3])
+                    hmUpdateConfig(hmDeviceID, loop, value, hmOverride, hmDCBStructure[loop][3])
 
                 # Calculate Hold Time
                 if hmDCBStructure[loop][0] == 32:
                     value = int((hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]] * 256) + hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4] + 1])
-                    hmUpdateConfig(hmMQTTDeviceID, loop, value, hmOverride, hmDCBStructure[loop][3])
+                    hmUpdateConfig(hmDeviceID, loop, value, hmOverride, hmDCBStructure[loop][3])
 
                 # Calculate Remote Air Temperature
                 # 0xffff = no sensor connected
                 if hmDCBStructure[loop][0] == 34:
                     value = float((hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]] * 256) + hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4] + 1])/10
                     if value != 6553.5:
-                        hmUpdateConfig(hmMQTTDeviceID, loop, value, hmOverride, hmDCBStructure[loop][3])
+                        hmUpdateConfig(hmDeviceID, loop, value, hmOverride, hmDCBStructure[loop][3])
                         
                 # Calculate Floor Temperature
                 # 0xffff = no sensor connected
                 if hmDCBStructure[loop][0] == 36:
                     value = float((hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]] * 256) + hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4] + 1])/10
                     if value != 6553.5:
-                        hmUpdateConfig(hmMQTTDeviceID, loop, value, hmOverride, hmDCBStructure[loop][3])
+                        hmUpdateConfig(hmDeviceID, loop, value, hmOverride, hmDCBStructure[loop][3])
 
                 # Calculate Built-in Air Temperature
                 if hmDCBStructure[loop][0] == 38:
                     value = float((hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]] * 256) + hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4] + 1])/10
-                    hmUpdateConfig(hmMQTTDeviceID, loop, value, hmOverride, hmDCBStructure[loop][3])
+                    hmUpdateConfig(hmDeviceID, loop, value, hmOverride, hmDCBStructure[loop][3])
 
 
 def hmGetTimerValues(hmStatData):

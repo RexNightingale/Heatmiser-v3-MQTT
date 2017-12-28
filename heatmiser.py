@@ -172,11 +172,12 @@ def UpdateXML(hmDeviceID, hmDCBCode, value):
     # Update the Heatmiser XML Configuration file
     if hmDCBCode <= 42:
         xmlupdate(hmDeviceID, str(hmDCBFunction), str(value), "level", "configuration", "", "", "", "", "", "")
+    return
 
     # Update the XML Configuration file
     # Model type 2 = PRT
     if hmThermostats[hmDeviceID, 4] == 2:
-        if 47 <= hmDCBCode <= 70 or 103 <= hmDCBCode <= 186:
+        if 49 <= hmDCBCode <= 72 or 103 <= hmDCBCode <= 186:
             # Update the XML file with heating settings
             for loop in range(0, 253):
                 if hmDCBTimers[loop][0] != hmDCBCode:
@@ -356,8 +357,9 @@ def hmGetTimerValues(hmStatData):
 
         # Append heating timer values
         for loop in range(0, settingsrange):
-            hmUpdateXML(hmDeviceID, loop + offset, hmStatData[loop + offset]):
-            #hmThermostats[hmDeviceID, loop + offset] = hmStatData[loop + offset]
+            if hmThermostats[hmDeviceID, loop + offset] != hmStatData[loop + offset]:
+                hmThermostats[hmDeviceID, loop + offset] = hmStatData[loop + offset]
+                hmUpdateXML(hmDeviceID, loop + offset, hmStatData[loop + offset]):
 
                 
 def hmTimeUpdate():

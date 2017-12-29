@@ -174,7 +174,10 @@ def UpdateXML(hmDeviceID, hmDCBCode, hmDCBFunction, value):
         xmlupdate(hmDeviceID, str(hmDCBFunction), str(value), "level", "configuration", "", "", "", "", "", "")
     
     if 49 <= hmDCBCode <= 72 or 105 <= hmDCBCode <= 188:
-        logmessage('info', 'heatmiser.py', 'Update Timer Settings : ' + str(hmDeviceID))
+        for loop in hmDCBTimers:
+            if hmDCBTimers[loop][0] == hmDCBCode:
+                xmlupdate(hmDeviceID, str(hmDCBTimers[loop][4]), str(value), "level", "heatingtimes", "day", str(hmDCBTimers[loop][1]), "timezone", str(hmDCBTimers[loop][2]))
+                return
     return
 
     # Update the XML Configuration file

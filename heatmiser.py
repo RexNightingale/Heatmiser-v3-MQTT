@@ -168,10 +168,11 @@ def hmUpdateConfig(hmDeviceID, DCBStructureCode, value, override, IncludeMQTT):
         if override == 1 and IncludeMQTT == 1:
             SendMQTTMessage(hmDeviceID, hmDCBStructure[DCBStructureCode][0], hmDCBStructure[DCBStructureCode][1], value)
     
-def UpdateXML(hmDeviceID, hmDCBCode, value):
+def UpdateXML(hmDeviceID, hmDCBCode, hmDCBFunction, value):
     # Update the Heatmiser XML Configuration file
     if hmDCBCode <= 42:
         xmlupdate(hmDeviceID, str(hmDCBFunction), str(value), "level", "configuration", "", "", "", "", "", "")
+    
     if 49 <= hmDCBCode <= 72 or 105 <= hmDCBCode <= 188:
         logmessage('info', 'heatmiser.py', 'Update Timer Settings : ' + str(hmDeviceID))
     return

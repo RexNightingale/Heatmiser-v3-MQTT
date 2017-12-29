@@ -176,7 +176,7 @@ def UpdateXML(hmDeviceID, hmDCBCode, hmDCBFunction, value):
     if 49 <= hmDCBCode <= 72 or 105 <= hmDCBCode <= 188:
         for loop in hmDCBTimers:
             if hmDCBTimers[loop][0] == hmDCBCode:
-                xmlupdate(hmDeviceID, str(hmDCBTimers[loop][4]), str(value), "level", "heatingtimes", "day", str(hmDCBTimers[loop][1]), "timezone", str(hmDCBTimers[loop][2]))
+                xmlupdate(hmDeviceID, str(hmDCBTimers[loop][4]), str(value), "level", "heatingtimes", "day", str(hmDCBTimers[loop][1]), "timezone", str(hmDCBTimers[loop][2]), "", "")
                 return
     return
 

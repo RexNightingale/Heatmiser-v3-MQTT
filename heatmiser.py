@@ -352,7 +352,7 @@ def hmGetTimerValues(hmStatData):
             settingsrange = 84
             # If thermostat type is type 2 PRT
             if hmStatData[13] == 2:
-                offset = 73
+                offset = 105
             # If thermostat type is type 4 PRTH
             elif hmStatData[13] == 4:
                 offset = 106

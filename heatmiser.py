@@ -6,12 +6,15 @@ import binascii
 import sys
 import time
 import datetime
+import sqlite3
 
 #Global variable definitions
 from constants import *
 from logger import logmessage
 from mqtt import outboundMQTTqueue
 from xmlparser import xmlupdate
+
+conn = sqlite3.connect('heatmiser.db')
 
 # Creation of the Twitter interface  
 api = tweepy.API(twAuth)
@@ -158,8 +161,8 @@ def hmUpdateConfig(hmDeviceID, DCBStructureCode, value, override, IncludeMQTT):
         if hmThermostats[hmDeviceID, hmDCBStructure[DCBStructureCode][0]] != value:
             hmThermostats[hmDeviceID, hmDCBStructure[DCBStructureCode][0]] = value
         
-            # Update the XML Configuration file
-            UpdateXML(hmDeviceID, hmDCBStructure[DCBStructureCode][0], value)
+            # Update the SQL Database
+            hmUpdateDb(hmDeviceID, hmDCBStructure[DCBStructureCode][0], value)
         
             # Send MQQT Values
             if IncludeMQTT == 1:
@@ -167,7 +170,20 @@ def hmUpdateConfig(hmDeviceID, DCBStructureCode, value, override, IncludeMQTT):
      
         if override == 1 and IncludeMQTT == 1:
             SendMQTTMessage(hmDeviceID, hmDCBStructure[DCBStructureCode][0], hmDCBStructure[DCBStructureCode][1], value)
-    
+
+            
+def hmUpdateDb(hmDeviceID, hmDCBCode, hmDCBFunction, hmValue):
+    curs=conn.cursor()
+    curs.execute("SELECT * FROM thermostats WHERE thermostatID = {id} AND DCBcode = {code}.\ format(id = hmDeviceID, code = hmDCBCode))
+    result = curs.fetchone()
+    if result:
+        conn.close()
+        return
+    else:
+        curs.execute("UPDATE thermostats SET Value = {value} WHERE thermostatID = {id} AND DCBcode = {code}.\ format(id = hmDeviceID, code = hmDCBCode, value = hmValue))
+        conn.close()
+
+
 def UpdateXML(hmDeviceID, hmDCBCode, hmDCBFunction, value):
     # Update the Heatmiser XML Configuration file
     if hmDCBCode <= 42:

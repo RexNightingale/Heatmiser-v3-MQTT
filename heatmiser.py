@@ -295,8 +295,17 @@ def hmForwardDCBValues(hmStatData, hmOverride):
         for loop in hmDCBStructure:
             # Work with all Single Byte functions
             if hmDCBStructure[loop][2] == 1:
-                    
-                # Check to see whether the stat supports the WaterState feature (PRT-HW)
+                if loop in [27, 28, 29, 30, 31]:
+                    # Check to see whether the stat supports the WaterState feature (PRT-HW)
+                    if loop == 27:
+                        if hmStatData[13] == 4:
+                            hmUpdateConfig(hmDeviceID, loop, hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride, hmDCBStructure[loop][3])
+                    # Check to see whether the stat supports the WaterState feature (PRT-HW)
+                    if loop == 28:
+                        if hmStatData[13] == 4:
+                        
+                hmUpdateConfig(hmDeviceID, loop, hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride, hmDCBStructure[loop][3])
+                        
                 if hmDCBStructure[loop][0] != 42:
                     hmUpdateConfig(hmDeviceID, loop, hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride, hmDCBStructure[loop][3])
                 else:

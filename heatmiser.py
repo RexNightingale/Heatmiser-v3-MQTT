@@ -295,9 +295,13 @@ def hmForwardDCBValues(hmStatData, hmOverride):
         for loop in hmDCBStructure:
             # Work with all Single Byte functions
             if hmDCBStructure[loop][2] == 1:
-                if loop in [27, 28, 29, 30, 31]:
+                if loop in [26, 27, 28, 29, 30, 31]:
                     # Check to see whether the stat supports the WaterState feature (PRT-HW)
+                    if loop == 26:
+                        if hmStatData[13] == 4:
+                            hmUpdateConfig(hmDeviceID, loop, hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride, hmDCBStructure[loop][3])
                     if loop == 27:
+                        # Check to see whether the thermostat is a PRT-HW.  The DayofWeek setting only appears for a PRT-HW on )
                         if hmStatData[13] == 4:
                             hmUpdateConfig(hmDeviceID, loop, hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride, hmDCBStructure[loop][3])
                     # Check to see whether the stat supports the WaterState feature (PRT-HW)

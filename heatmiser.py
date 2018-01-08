@@ -157,61 +157,38 @@ def SendMQTTMessage(hmDeviceID, hmDCBCode, hmDCBFunction, hmMQTTValue):
 
 def hmUpdateConfig(hmDeviceID, DCBStructureCode, value, override, IncludeMQTT):
     # Update the in-memory configuration
+
     if hmThermostats[hmDeviceID, hmDCBStructure[DCBStructureCode][0]] != value or override == 1:
         if hmThermostats[hmDeviceID, hmDCBStructure[DCBStructureCode][0]] != value:
             hmThermostats[hmDeviceID, hmDCBStructure[DCBStructureCode][0]] = value
-        
-            # Update the SQL Database
-            hmUpdateDb(hmDeviceID, hmDCBStructure[DCBStructureCode][0], value)
-        
-            # Send MQQT Values
+
+            # Update the XML Configuration file
+            hmUpdateDb(hmDeviceID, hmDCBStructure[DCBStructureCode][0], hmDCBStructure[DCBStructureCode][1], value)
+
+            # Send MQTT Values
             if IncludeMQTT == 1:
                 SendMQTTMessage(hmDeviceID, hmDCBStructure[DCBStructureCode][0], hmDCBStructure[DCBStructureCode][1], value)
-     
+
         if override == 1 and IncludeMQTT == 1:
-            SendMQTTMessage(hmDeviceID, hmDCBStructure[DCBStructureCode][0], hmDCBStructure[DCBStructureCode][1], value)
+                SendMQTTMessage(hmDeviceID, hmDCBStructure[DCBStructureCode][0], hmDCBStructure[DCBStructureCode][1], value)
 
             
 def hmUpdateDb(hmDeviceID, hmDCBCode, hmDCBFunction, hmValue):
-    curs=conn.cursor()
-    curs.execute("SELECT * FROM thermostats WHERE thermostatID = {id} AND DCBcode = {code}.\ format(id = hmDeviceID, code = hmDCBCode))
-    result = curs.fetchone()
-    if result:
+    # Update the Heatmiser SQL Database
+
+    if hmDCBCode <= 42 or hmDCBCode >= 47:
+        params = (hmDeviceID, hmDCBCode, str(hmDCBFunction), hmValue)
+        conn = sqlite3.connect('heatmiser.db')
+        curs = conn.cursor()
+        curs.execute("SELECT * FROM thermostats WHERE ThermostatID = {id} AND DCBCode = {code}".format(id = hmDeviceID, code = hmDCBCode))
+        result = curs.fetchone()
+        if result:
+            curs.execute("UPDATE thermostats SET Value = {temp} WHERE ThermostatID = {id} AND DCBCode = {code}".format(id = hmDeviceID, code = hmDCBCode, temp = hmValue))
+        else:
+            curs.execute('INSERT INTO thermostats VALUES (?, ?, ?, ?)',params)
+
+        conn.commit()
         conn.close()
-        return
-    else:
-        curs.execute("UPDATE thermostats SET Value = {value} WHERE thermostatID = {id} AND DCBcode = {code}.\ format(id = hmDeviceID, code = hmDCBCode, value = hmValue))
-        conn.close()
-
-
-def UpdateXML(hmDeviceID, hmDCBCode, hmDCBFunction, value):
-    # Update the Heatmiser XML Configuration file
-    if hmDCBCode <= 42:
-        xmlupdate(hmDeviceID, str(hmDCBFunction), str(value), "level", "configuration", "", "", "", "", "", "")
-
-    if 47 <= hmDCBCode <= 70 or 103 <= hmDCBCode <= 186:
-        for loop in hmDCBTimers:
-            if hmDCBTimers[loop][0] == hmDCBCode:
-                xmlupdate(hmDeviceID, str(hmDCBTimers[loop][4]), str(value), "level", "heatingtimes", "day", str(hmDCBTimers[loop][1]), "timezone", str(hmDCBTimers[loo$
-                return
-    return
-
-    # Update the XML Configuration file
-    # Model type 2 = PRT
-    if hmThermostats[hmDeviceID, 4] == 2:
-        if 49 <= hmDCBCode <= 72 or 103 <= hmDCBCode <= 186:
-            # Update the XML file with heating settings
-            for loop in range(0, 253):
-                if hmDCBTimers[loop][0] != hmDCBCode:
-                    xmlupdate(hmDeviceID, hmDCBTimers[loop][4], value, "level", "heatingtimes", "day", hmDCBTimers[loop][1], "timezone", hmDCBTimers[loop][2], "", "")
-        
-    # Model type 4 = PRT-H
-    if hmThermostats[hmDeviceID, 4] == 4:
-        if 71 <= hmDCBCode <= 102 or 187 <= hmDCBCode <= 298:
-            # Update the XML file with hotwater settings
-            for loop in range(0, 253):
-                if hmDCBTimers[loop][0] != hmDCBCode:
-                    xmlupdate(hmDeviceID, hmDCBTimers[loop][4], value, "level", "hotwatertimes", "day", hmDCBTimers[loop][1], "timezone", hmDCBTimers[loop][2], "", "")
 
     
 def on_connect(client, userdata, rc):
@@ -293,28 +270,45 @@ def hmForwardDCBValues(hmStatData, hmOverride):
     # Check to make sure the response is from a PRT or PRT-HW device, 2 = PRT 4 = PRT-HW
     if hmStatData[13] in [2, 4]:
         for loop in hmDCBStructure:
+            print(hmDeviceID, loop, hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]])
+
             # Work with all Single Byte functions
             if hmDCBStructure[loop][2] == 1:
-                if loop in [27, 28, 29, 30, 31]:
-                    # Check to see whether the stat supports the WaterState feature (PRT-HW)
-                    if loop == 27:
-                        if hmDCBStructure[loop][0] == 42:
-                            hmUpdateConfig(hmDeviceID, loop, hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride, hmDCBStructure[loop][3])
-                    if loop == 28:
-                        # Check to see whether the thermostat is a PRT-HW.  The DayofWeek setting only appears for a PRT-HW on )
-                        if hmStatData[13] == 4:
-                            hmUpdateConfig(hmDeviceID, loop, hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride, hmDCBStructure[loop][3])
-                    # Check to see whether the stat supports the WaterState feature (PRT-HW)
-                    if loop == 28:
-                        if hmStatData[13] == 4:
-                        
-                hmUpdateConfig(hmDeviceID, loop, hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride, hmDCBStructure[loop][3])
-                        
-                if hmDCBStructure[loop][0] != 42:
-                    hmUpdateConfig(hmDeviceID, loop, hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride, hmDCBStructure[loop][3])
-                else:
+                # Check to see whether the stat supports the WaterState feature (PRT-HW)
+                if hmDCBStructure[loop][0] == 42:
+                    if hmStatData[13] != 4:
+                        hmUpdateConfig(hmDeviceID, loop, 0, hmOverride, hmDCBStructure[loop][3])
+                        hmUpdateConfig(hmDeviceID, loop + 1, hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride, hmDCBStructure[loop][3])
+                        continue
+
+                if 71 <= hmDCBStructure[loop][0] <= 102 or 187 <= hmDCBStructure[loop][0] <= 298:
                     if hmStatData[13] == 4:
-                        hmUpdateConfig(hmDeviceID, loop, hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride, hmDCBStructure[loop][3])
+                        if 71 <= hmDCBStructure[loop][0] <= 102:
+                            hmUpdateConfig(hmDeviceID, loop, hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride, hmDCBStructure[loop][3])
+
+                        if hmStatData[25] == 1 and 187 <= hmDCBStructure[loop][0] <= 298:
+                            hmUpdateConfig(hmDeviceID, loop, hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride, hmDCBStructure[loop][3])
+
+                    continue
+
+                if 103 <= hmDCBStructure[loop][0] <= 186:
+                    if hmStatData[25] == 1:
+                        if hmStatData[13] == 2:
+                            if loop + 1 < len(hmDCBStructure):
+                                hmUpdateConfig(hmDeviceID, loop + 1, hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride, hmDCBStructure[loop][3])
+
+                        if hmStatData[13] == 4:
+                            hmUpdateConfig(hmDeviceID, loop, hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride, hmDCBStructure[loop][3])
+
+                    continue
+
+                if hmDCBStructure[loop][0] > 42:
+                    if hmStatData[13] == 2:
+                        if loop + 1 < len(hmDCBStructure):
+                            hmUpdateConfig(hmDeviceID, loop + 1, hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride, hmDCBStructure[loop][3])
+                        continue
+
+                hmUpdateConfig(hmDeviceID, loop, hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]], hmOverride, hmDCBStructure[loop][3])
 
             # Work with all > 1 Byte functions
             else:
@@ -354,49 +348,6 @@ def hmForwardDCBValues(hmStatData, hmOverride):
                     hmUpdateConfig(hmDeviceID, loop, value, hmOverride, hmDCBStructure[loop][3])
 
 
-def hmGetTimerValues(hmStatData):
-    # Get the Timer values for the thermostats
-    hmDeviceID = hmStatData[3]
-
-    # Check to make sure the response is from a PRT or PRT-HW device, 2 = PRT 4 = PRT-HW
-    if hmStatData[13] in [2, 4]:
-    
-        # Get Heating timer values
-        # Check to see if program mode is 5/2 Days
-        if hmStatData[25] == 0:
-            settingsrange = 24
-            # If thermostat type is type 2 PRT
-            if hmStatData[13] == 2:
-                offset = 49
-            # If thermostat type is type 4 PRTH
-            elif hmStatData[13] == 4:
-                offset = 50
-                # Append hotwater timer values
-                for loop in range(0, 32):
-                    UpdateXML(hmDeviceID, loop + 74, hmStatData[loop + 74]):
-                    #hmThermostats[hmDeviceID, loop + 74] = hmStatData[loop + 74]
-
-        # Get 7 day program mode values
-        else:
-            settingsrange = 84
-            # If thermostat type is type 2 PRT
-            if hmStatData[13] == 2:
-                offset = 105
-            # If thermostat type is type 4 PRTH
-            elif hmStatData[13] == 4:
-                offset = 106
-                # Append hotwater timer values
-                for loop in range(0, 112):
-                    UpdateXML(hmDeviceID, loop + 190, hmStatData[loop + 190]):
-                    #hmThermostats[hmDeviceID, loop + 190] = hmStatData[loop + 190]
-
-        # Append heating timer values
-        for loop in range(0, settingsrange):
-            if hmThermostats[hmDeviceID, loop + offset] != hmStatData[loop + offset]:
-                hmThermostats[hmDeviceID, loop + offset] = hmStatData[loop + offset]
-                UpdateXML(hmDeviceID, loop + offset, "hello", hmStatData[loop + offset]):
-
-                
 def hmTimeUpdate():
     # Update thermostat times
     dayofweek = datetime.datetime.now().isoweekday()
@@ -491,7 +442,6 @@ def main():
             if hmValidateResponse(datal) == 1:
                 # Check to work out what has been sent and forward to the MQTT broker
                 hmForwardDCBValues(datal, hourprocess)
-                hmGetTimerValues(datal)
 
             # Process the inbound message stuff
             # Actions happen inbetween the regular polling cycle

@@ -41,7 +41,7 @@ twAuth.set_access_token(twAccessToken, twAccessTokenSecret)
 # Settings below match those within the protocol description for RO and RW options
 # Format [ID],  0 = DCBUniqueAddress,
 #               1 = DCBFunctionName,
-#               2 = Bytes,
+#               2 = Bytes (now not used),
 #               3 = Include in Outbound MQTT Messages,
 #               4 = Offset for Read from Frame
 #               5 = Read/Write (used to determine whether to monitor the MQTT broker for chnage),

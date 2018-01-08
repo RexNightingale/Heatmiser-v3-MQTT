@@ -12,7 +12,6 @@ import sqlite3
 from constants import *
 from logger import logmessage
 from mqtt import outboundMQTTqueue
-from xmlparser import xmlupdate
 
 conn = sqlite3.connect('heatmiser.db')
 
@@ -270,7 +269,10 @@ def hmForwardDCBValues(hmStatData, hmOverride):
     # Check to make sure the response is from a PRT or PRT-HW device, 2 = PRT 4 = PRT-HW
     if hmStatData[13] in [2, 4]:
         for loop in hmDCBStructure:
-            print(hmDeviceID, loop, hmStatData[hmDCBStructure[loop][0] + hmDCBStructure[loop][4]])
+            if loop > 89 and hmStatData[13] == 4 and hmStatData[25] == 0:
+                continue
+            if loop > 56 and hmStatData[13] == 2 and hmStatData[25] == 0:
+                continue
 
             # Work with all Single Byte functions
             if hmDCBStructure[loop][2] == 1:

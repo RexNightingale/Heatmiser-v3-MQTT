@@ -17,7 +17,6 @@ hmMasterAddress = 0x81                                              # Can be eit
 hmMAXStats = 32                                                     # Max number of Stats available on 1 system
 hmStatList = [1, 2, 3, 4, 5, 6, 7, 10, 12, 13, 14]                  # List of the Stat ID's used
 hmThermostats = {}                                                  # Dynamic array to hold current thermostat status
-hmThermostatTimers = {}
 
 # Setting for the MQTT element of the service
 hmMQTTpath = "<your MQTT Subscription Path>"                        # Subscription path used for your MQTT Broker   

@@ -269,11 +269,13 @@ def hmForwardDCBValues(hmStatData, hmOverride):
     # Check to make sure the response is from a PRT or PRT-HW device, 2 = PRT 4 = PRT-HW
     if hmStatData[13] in [2, 4]:
         for loop in hmDCBStructure:
-            if loop > 89 and hmStatData[13] == 4 and hmStatData[25] == 0:
-                continue
-            if loop > 55 and hmStatData[13] == 2 and hmStatData[25] == 0:
-                continue
-
+            if loop > 55:
+                if hmStatData[13] == 2:
+                    if hmStatData[25] == 0:
+                        continue
+                if loop > 89:
+                    continue
+                    
             # Work with all Single Byte functions
             if hmDCBStructure[loop][2] == 1:
                 # Check to see whether the stat supports the WaterState feature (PRT-HW)

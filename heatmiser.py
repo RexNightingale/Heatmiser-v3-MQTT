@@ -271,7 +271,7 @@ def hmForwardDCBValues(hmStatData, hmOverride):
         for loop in hmDCBStructure:
             if loop > 89 and hmStatData[13] == 4 and hmStatData[25] == 0:
                 continue
-            if loop > 56 and hmStatData[13] == 2 and hmStatData[25] == 0:
+            if loop > 55 and hmStatData[13] == 2 and hmStatData[25] == 0:
                 continue
 
             # Work with all Single Byte functions

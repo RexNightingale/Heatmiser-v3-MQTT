@@ -272,7 +272,7 @@ def hmForwardDCBValues(hmStatData, hmOverride):
             # Stop processing through hmDCBStructure based on length of the DCB expected response
             if loop > 55:
                 if hmStatData[25] == 0:
-                    if loop > 89:
+                    if loop > 87:
                         continue
                     if hmStatData[13] == 2:
                         continue

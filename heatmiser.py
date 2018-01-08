@@ -271,11 +271,11 @@ def hmForwardDCBValues(hmStatData, hmOverride):
         for loop in hmDCBStructure:
             # Stop processing through hmDCBStructure based on length of the DCB expected response
             if loop > 55:
-                if hmStatData[13] == 2:
-                    if hmStatData[25] == 0:
+                if hmStatData[25] == 0:
+                    if loop > 89:
                         continue
-                if loop > 89:
-                    continue
+                    if hmStatData[13] == 2:
+                        continue
                     
             # Calculate the Calibration Offset
             if hmDCBStructure[loop][0] == 8:

@@ -190,6 +190,19 @@ def hmUpdateDb(hmDeviceID, hmDCBCode, hmDCBFunction, hmValue):
         conn.close()
 
     
+def hmReadDb(hmDeviceID, hmDCBCode):
+    # Read the Heatmiser SQL Database    
+    conn = sqlite3.connect('heatmiser.db')
+    curs = conn.cursor()
+    curs.execute("SELECT Value FROM thermostats WHERE ThermostatID = {id} AND DCBCode = {code}".format(id = hmDeviceID, code = hmDCBCode))
+    result = curs.fetchone()
+    if not result:
+        result = 999
+    conn.commit()
+    conn.close()
+    return result
+    
+    
 def on_connect(client, userdata, rc):
     logmessage('info', 'heatmiser.py', 'Connected to MQTT broker')
     #msgTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -416,7 +429,8 @@ def main():
     for x in range(1, hmMAXStats + 1):
         for y in range(1, 299):
             hmThermostats[x, y] = 999
-
+            hmThermostats[x, y] = hmReadDb(x, y)
+            
     # Set the initial values for process variables
     hourprocess = 0
     timeprocess = 0

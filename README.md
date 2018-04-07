@@ -90,7 +90,7 @@ pip install tweepy
 ```
 pip install queuelib
 ```
-### 'heatmiser.py' run at reboot
+### 'heatmiser.py' run at start-up
 To set heatmiser.py to run automatically on start add an entry into the crontab file like so:
 ```
 crontab -e

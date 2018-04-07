@@ -51,6 +51,13 @@ This is the main engine of the whole thing.  However to simplify this a bit:
 
 That's it..
 
+# Installation
+
+Mostly the installation is easy, just place the python files in a directory you want to run this from, update the constants file with your own local settings and off you go.  However, you will need the following to run:
+
+## Paho MQTT Client
+- pip install paho-mqtt
+
 # Future Plans
 
 For the future I plan to create a web interface to this utility such that I can interact a bit more with the Thermostats, especially for functions like controlling centrally the On/Off timers, where a home automation system may not be that ideal for this and gives you the ability to run the heating off-line.

@@ -11,7 +11,7 @@ outboundMQTTqueue = Queue.Queue()
 def on_connect(client, userdata, rc):
 	# Do something when connected to MQTT Broker
 	logmessage('info', 'mqtt.py', 'Connected to broker')
-	
+
 	# Go through all the entries in the hmDCBStructure array
 	for loop in hmDCBStructure:
 		# Find only those which have a status of 'RW'
@@ -54,7 +54,7 @@ while True:
 	except:
 		logmessage('error', 'mqtt.py', 'Error connecting to MQTT Broker')
 		time.sleep(30)
-		
+
 
 # Perform an infinate loop to receive messages from the MQTT Broker
 mqttclient.loop_start()

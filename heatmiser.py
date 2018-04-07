@@ -190,7 +190,7 @@ def hmUpdateDb(hmDeviceID, hmDCBCode, hmDCBFunction, hmValue):
         conn.close()
 
     
-def on_connect(client, userdata, rc):
+def on_connect(client, userdata, flags, rc):
     logmessage('info', 'heatmiser.py', 'Connected to MQTT broker')
     #msgTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     #api.update_status(status = msgTime + " Connected to the MQTT broker")

@@ -62,9 +62,9 @@ sudo apt-get upgrade
 sudo apt-get install sqlite3
 ```
 
-Now to setup the SQLite Database for use by this utility:
+Now to setup the SQLite Database for use by this utility.  I usually set this up in the same directory as the main Python code:
 ```
-sqlite3 <DB File Name>
+sqlite3 heatmiser.db
 ```
 Now to setup the table:
 ```

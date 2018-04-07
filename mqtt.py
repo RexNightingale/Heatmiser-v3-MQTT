@@ -8,7 +8,7 @@ from logger import logmessage
 
 outboundMQTTqueue = Queue.Queue()
 
-def on_connect(client, userdata, rc):
+def on_connect(client, userdata, flags, rc):
 	# Do something when connected to MQTT Broker
 	logmessage('info', 'mqtt.py', 'Connected to broker')
 

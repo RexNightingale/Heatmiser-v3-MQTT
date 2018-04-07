@@ -77,6 +77,7 @@ And finally exit SQLite:
 .exit
 ```
 ### Paho MQTT
+This is proven to work with v1.1 of the Paho MQTT client.
 ```
 pip install paho-mqtt
 ```

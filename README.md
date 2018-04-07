@@ -62,6 +62,18 @@ sudo apt-get upgrade
 sudo apt-get install sqlite3
 ```
 
+Now to setup the SQLite Database for use by this utility:
+```
+sqlite3 <DB File Name>
+```
+Now to setup the table:
+```
+CREATE TABLE <Table Name> (<Field 1 Name> <Data Type>, ........ <Field n Name> <Data Type>);
+```
+And finally exit SQLite:
+```
+.exit
+```
 ### Pahoo MQTT
 ```
 pip install paho-mqtt

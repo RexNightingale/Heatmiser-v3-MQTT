@@ -56,6 +56,7 @@ That's it..
 There's not much too this one from an installation perspective, copy the files into the directory of your choosing, update 'constants.py' with your local settings and set to run 'heatmiser.py' automatically on boot.  However, there are a few pre-requisites that you will need:
 
 ### SQL Lite 3
+This is proven to work with SQLlite3 v3.23.0.
 ```
 sudo apt-get update
 sudo apt-get upgrade
@@ -77,17 +78,19 @@ And finally exit SQLite:
 .exit
 ```
 ### Paho MQTT
-This is proven to work with v1.1 of the Paho MQTT client.
+This is proven to work with v1.3.1 of the Paho MQTT client.
 ```
 pip install paho-mqtt
 ```
 
 ### Tweepy
+This is proven to work with v3.6.0 of the Tweepy client.
 ```
 pip install tweepy
 ```
 
 ### Queue Library
+This is proven to work with v1.5.0 of the QueueLib library.
 ```
 pip install queuelib
 ```

@@ -78,19 +78,19 @@ And finally exit SQLite:
 .exit
 ```
 ### Paho MQTT
-This is proven to work with v1.3.1 of the Paho MQTT client.
+This is proven to work with v1.3.1 of the Paho MQTT client:
 ```
 pip install paho-mqtt
 ```
 
 ### Tweepy
-This is proven to work with v3.6.0 of the Tweepy client.
+This is proven to work with v3.6.0 of the Tweepy client:
 ```
 pip install tweepy
 ```
 
 ### Queue Library
-This is proven to work with v1.5.0 of the QueueLib library.
+This is proven to work with v1.5.0 of the QueueLib library:
 ```
 pip install queuelib
 ```
@@ -99,7 +99,7 @@ To set heatmiser.py to run automatically on start add an entry into the crontab 
 ```
 crontab -e
 ```
-add this line to the end of the crontab file
+add this line to the end of the crontab file.  Remember to replace '/home/pi/' with the directory of your choosing:
 ```
 @reboot python /home/pi/heatmiser.py /home/pi/crontablog.log 2>&1
 ```

@@ -81,12 +81,12 @@ And finally exit SQLite:
 pip install paho-mqtt
 ```
 
-### tweepy
+### Tweepy
 ```
 pip install tweepy
 ```
 
-### Queue
+### Queue Library
 ```
 pip install queuelib
 ```

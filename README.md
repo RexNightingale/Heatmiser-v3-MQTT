@@ -18,7 +18,7 @@ To connect the Heatmiser Thermostats to the network, I have used the GC-ATC-1000
 
 For the actual running of the scripts I have just used a Raspberry PI Model B.  It does not have to be that powerful for this lot.  As it happens I have been using one for monitoring my boiler, so it was just as easy to use that.
 
-In theory when running the scripts and assuming that you have set the right IP addresses and port numbers, then this should just all fire up and off you go.  However, I did have quite a few teething problems when starting off.  Trial and error with a lot of this and a good dose of WireShark.
+In theory when running the scripts and assuming that you have set the right IP addresses and port numbers, then this should just all fire up and off you go.  However, I did have quite a few teething problems when starting off with the serial interface and getting anything meaningful back from the Heatmiser set-up.  Trial and error with a lot of this and a good dose of WireShark into the mix.
 
 # MQTT Broker
 

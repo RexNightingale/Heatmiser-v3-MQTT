@@ -51,6 +51,17 @@ This is the main engine of the whole thing.  However to simplify this a bit:
 
 That's it..
 
+# Installation
+
+There's not much too this one from an installation perspective, copy the files into the directory of your choosing, update 'constants.py' with your local settings and set to run 'heatmiser.py' automatically on boot.  However, there are a few pre-requisites that you will need:
+
+## SQL Lite 3
+- 
+## Pahoo MQTT
+- pip install paho-mqtt
+
+## tweepy
+
 # Future Plans
 
 For the future I plan to create a web interface to this utility such that I can interact a bit more with the Thermostats, especially for functions like controlling centrally the On/Off timers, where a home automation system may not be that ideal for this and gives you the ability to run the heating off-line.

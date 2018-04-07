@@ -99,11 +99,11 @@ To set heatmiser.py to run automatically on start add an entry into the crontab 
 ```
 crontab -e
 ```
-add this line to the end of the crontab file.  Remember to replace '/home/pi/' with the directory of your choosing:
+Add this line to the end of the crontab file.  Remember to replace '/home/pi/' with the directory of your choosing:
 ```
 @reboot python /home/pi/heatmiser.py /home/pi/crontablog.log 2>&1
 ```
-and then exit the crontab utility and reboot...all being well you should have a fully functioning system
+Exit the crontab utility and reboot...all being well you should have a fully functioning system
 
 # Future Plans
 

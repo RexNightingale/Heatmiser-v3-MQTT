@@ -71,6 +71,7 @@ Now to setup the table:
 CREATE TABLE thermostats (ThermostatID INT, DCBCode INT, DCBCodeName TEXT, Value INT);
 ```
 You might want to set up specific permissions within the SQLite Database, but I havent done this here (shame on me).
+
 And finally exit SQLite:
 ```
 .exit

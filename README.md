@@ -76,7 +76,7 @@ And finally exit SQLite:
 ```
 .exit
 ```
-### Pahoo MQTT
+### Paho MQTT
 ```
 pip install paho-mqtt
 ```
@@ -84,6 +84,11 @@ pip install paho-mqtt
 ### tweepy
 ```
 pip install tweepy
+```
+
+### Queue
+```
+pip install queuelib
 ```
 
 # Future Plans

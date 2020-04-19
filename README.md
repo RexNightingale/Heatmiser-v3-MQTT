@@ -16,11 +16,11 @@ To connect the Heatmiser Thermostats to the network, I have used the GC-ATC-1000
 GC-ATC-1000
 
 ### TCP Mode
-	Telnet Server/Client          Server
-  	Port number					          1023			(anything you like really)
-  	Remote Server IP Address		  0.0.0.0   (not sure this makes a difference in normal mode)
+	Telnet Server/Client          	Server
+  	Port number			1023		(anything you like really)
+  	Remote Server IP Address	0.0.0.0		(not sure this makes a difference in normal mode)
   	Client mode inactive timeout	20 minute
-  	Server mode protect timeout		2 minute
+  	Server mode protect timeout	2 minute
 
 ### UDP Mode
 	  Status						            Disable

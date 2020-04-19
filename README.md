@@ -13,7 +13,8 @@ I will confess that I am only a hobbyist and therefore the code may not be optim
 # Heatmiser Serial Interface
 
 To connect the Heatmiser Thermostats to the network, I have used the GC-ATC-1000 TCP/IP to RS232/422/485 Converter.  There are others on the market however, the more you spend the more features you get with them, preference is yours.  Originally I had been using this with my Openhab set up and the Heatmiser Binding quite happily so I knew it worked, but limitations on the Openhab Binding drove me to this route.  Configuration setup used on my GC-ATC-1000 is :
-GC-ATC-1000
+
+# GC-ATC-1000
 
 ### TCP Mode
 	Telnet Server/Client          	Server

@@ -16,6 +16,8 @@ To connect the Heatmiser Thermostats to the network, I have used the GC-ATC-1000
 
 # GC-ATC-1000
 
+Configuration setup used on my GC-ATC-1000 is :
+
 ### TCP Mode
 	Telnet Server/Client          	Server
   	Port number			1023		(anything you like really)

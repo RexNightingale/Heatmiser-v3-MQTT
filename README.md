@@ -23,17 +23,17 @@ GC-ATC-1000
   	Server mode protect timeout	2 minute
 
 ### UDP Mode
-	  Status						            Disable
-	  Local Port					          21
+	  Status			Disable
+	  Local Port			21
 	  
 ### UART
-	  Mode						              RS485
-	  Baudrate						          4800
-	  Character Bits					      8
-	  Parity Type					          none
-	  Stop Bit						          1
-	  Hardware Flow Control			    none
-	  Delimiter						          none set
+	  Mode				RS485
+	  Baudrate			4800
+	  Character Bits		8
+	  Parity Type			none
+	  Stop Bit			1
+	  Hardware Flow Control		none
+	  Delimiter			none set
 
 
 # Raspberry Pi

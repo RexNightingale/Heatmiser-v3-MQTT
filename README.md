@@ -36,6 +36,15 @@ To connect the Heatmiser Thermostats to the network, I have used the GC-ATC-1000
 	  Hardware Flow Control		none
 	  Delimiter			none set
 
+### Hardware Connections
+	  GC-ATC-1000			Heatmiser Wiring Centre
+	  Pin 1 - RS485 +		Touchpad 'Y'
+	  Pin 2 - RS485 -		Touchpad 'B'
+	  Pin 3 - Not used		-
+	  Pin 4 - Not used		-
+	  Pin 5 - Vin			-
+	  Pin 6 - GND			-
+
 
 # Raspberry Pi
 
